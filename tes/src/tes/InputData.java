@@ -76,10 +76,6 @@ public class InputData extends JFrame {
 				
 				for(int i=0;i<=5;i++) {				
 					edit.setRowCount(i);
-					
-					
-					
-					
 				}
 				
 			}
