@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -117,10 +118,8 @@ public class InputData extends JFrame {
 			
 		
 		JButton btnCancel = new JButton("Cancel");
-		
 		DatePicker date = new DatePicker();
-		date.getComponentDateTextField().setDropMode(DropMode.INSERT);
-		
+		String format = date.getDate().format(DateTimeFormatter.ofPattern("YYYY-MM-DD"));
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
@@ -181,8 +180,6 @@ private void sql() {
 		catch (Exception e1) {
 			e1.printStackTrace();}
 		}
-private void date() {
 
-}
 }
 
