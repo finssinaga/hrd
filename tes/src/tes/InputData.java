@@ -76,6 +76,10 @@ public class InputData extends JFrame {
 				
 				for(int i=0;i<=5;i++) {				
 					edit.setRowCount(i);
+					
+					
+					
+					
 				}
 				
 			}
@@ -120,6 +124,7 @@ public class InputData extends JFrame {
 		
 		DatePicker date = new DatePicker();
 		date.getComponentDateTextField().setDropMode(DropMode.INSERT);
+		
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
