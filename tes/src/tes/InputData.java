@@ -120,7 +120,6 @@ public class InputData extends JFrame {
 		
 		DatePicker date = new DatePicker();
 		date.getComponentDateTextField().setDropMode(DropMode.INSERT);
-		DatePickerSettings dsp = DatePickerSettings 
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
