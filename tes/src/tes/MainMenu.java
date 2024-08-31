@@ -111,8 +111,7 @@ public class MainMenu extends JFrame {
 		JMenuItem mntmInputData = new JMenuItem("input data");
 		mntmInputData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFrame input = new InputData();
-				input.setVisible(true);
+				tes.InputData.main(null);
 			}
 		});
 		mnMaster.add(mntmInputData);
