@@ -54,7 +54,7 @@ public class Logon extends JFrame {
 		setContentPane(contentPane);
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon((Icon) new File("icon/pt_pbs.png"));
+		lblNewLabel.setIcon(new ImageIcon(Logon.class.getResource("/icon/pt_pbs.png")));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
