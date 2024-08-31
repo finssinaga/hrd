@@ -2,21 +2,19 @@ package tes;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Window.Type;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.format.DateTimeFormatter;
-import java.util.Vector;
-import java.util.concurrent.TimeUnit;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -26,13 +24,11 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSetMetaData;
-import com.github.lgooddatepicker.*;
+import java.sql.SQLException;
+
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 
-import javax.swing.DropMode;
-import java.time.DayOfWeek;
-import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 
 public class InputData extends JFrame {
@@ -42,6 +38,7 @@ public class InputData extends JFrame {
 	/**
 	 * @wbp.nonvisual location=328,259
 	 */
+	
 	private final DatePickerSettings datePickerSettings = new DatePickerSettings();
 	private JTextField noPlat;
 	private JTextField namaPart;
@@ -166,14 +163,22 @@ public class InputData extends JFrame {
 						prep.setString(3, namapart);
 						prep.setString(4, merkpart);
 						prep.setString(5, user);
-						prep.setString(6, keterangan);
+						prep.setString(7, keterangan);
 						
 						prep.execute();
+						prep.close();
 						}
+					con.close();
+					
 					}
-				catch (Exception ins) {
-					ins.printStackTrace();
+				catch (SQLException ins) {
+					String errtx = ins.toString();
+					ErrorInput(errtx);
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+					
 				}
 			}
 		);
@@ -285,7 +290,7 @@ public class InputData extends JFrame {
 		
 		
 	}
-private void sql() {
+public void sql() {
 	try {
 		
 		Class.forName("com.mysql.cj.jdbc.Driver");
@@ -303,9 +308,52 @@ private void sql() {
 			colname[i]=rsmd.getColumnName(i+1);
 			model.setColumnIdentifiers(colname);
 		}
+		stats.close();
+		co.close();
 	}
 		catch (Exception e1) {
 			e1.printStackTrace();}
 		}
+public void ErrorInput(String en) {
+	getContentPane().removeAll();
+	getContentPane().repaint();
+	JDialog Error = new JDialog();
+	JPanel contentPanel = new JPanel();
+	JLabel lblNewLabel;
+	Error.setType(Type.POPUP);
+	Error.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	Error.setBounds(100, 100, 450, 300);
+	Error.getContentPane().setLayout(new BorderLayout());
+	contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+	getContentPane().add(contentPanel, BorderLayout.CENTER);
+	{
+		lblNewLabel = new JLabel("ERROR!! "+en);
+	}
+	
+	JButton btnOk = new JButton("OK");
+	GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
+	gl_contentPanel.setHorizontalGroup(
+		gl_contentPanel.createParallelGroup(Alignment.LEADING)
+			.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
+				.addContainerGap(336, Short.MAX_VALUE)
+				.addComponent(btnOk)
+				.addGap(41))
+			.addGroup(gl_contentPanel.createSequentialGroup()
+				.addContainerGap()
+				.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+				.addGap(308))
+	);
+	gl_contentPanel.setVerticalGroup(
+		gl_contentPanel.createParallelGroup(Alignment.LEADING)
+			.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
+				.addContainerGap()
+				.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+				.addPreferredGap(ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+				.addComponent(btnOk, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+				.addContainerGap())
+	);
+	contentPanel.setLayout(gl_contentPanel);
+}
+
 }
 

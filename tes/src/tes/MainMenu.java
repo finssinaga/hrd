@@ -17,6 +17,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -25,6 +26,7 @@ import javax.swing.JTable;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Window;
+import java.awt.Window.Type;
 import java.awt.Button;
 import javax.swing.BoxLayout;
 import java.awt.Component;
@@ -37,6 +39,7 @@ import javax.swing.SwingConstants;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JScrollPane;
@@ -209,7 +212,7 @@ public class MainMenu extends JFrame {
 				try {
 					DefaultTableModel insert = (DefaultTableModel)table.getModel();
 					
-					Class.forName("com.mysql.cj.jdbc.Driver");
+					Class.forName("com.mysql.cj.jdbc.Driver"); 
 					Connection con = DriverManager.getConnection("jdbc:mysql://100.90.166.57:3306/hrd", "hrdjerapah", "hrdjerapah");
 					for (int i=0; i<insert.getRowCount();i++) {
 						jeniskend = insert.getValueAt(i, 1).toString();
@@ -272,5 +275,6 @@ public class MainMenu extends JFrame {
 		getContentPane().add(panel);
 	}
 
-
 }
+
+
