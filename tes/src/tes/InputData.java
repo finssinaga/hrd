@@ -30,6 +30,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class InputData extends JFrame {
 
@@ -76,6 +77,7 @@ public class InputData extends JFrame {
 		datePickerSettings.setAllowKeyboardEditing(false);
 		datePickerSettings.setFormatForDatesCommonEra(DateTimeFormatter.ofPattern("uuuu-MM-dd"));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setExtendedState(MAXIMIZED_BOTH);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -146,8 +148,8 @@ public class InputData extends JFrame {
 				try {
 					DefaultTableModel insert = (DefaultTableModel)table.getModel();
 					
-					Class.forName("com.mysql.cj.jdbc.Driver");
-					Connection con = DriverManager.getConnection("jdbc:mysql://100.90.166.57:3306/hrd", "hrdjerapah", "hrdjerapah");
+					Class.forName(SqlUrl.Driver());
+					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
 					for (int i=0; i<insert.getRowCount();i++) {
 						tanggal = insert.getValueAt(i, 0).toString();
 						jeniskend = insert.getValueAt(i, 1).toString();
@@ -173,7 +175,8 @@ public class InputData extends JFrame {
 					}
 				catch (SQLException ins) {
 					String errtx = ins.toString();
-					ErrorInput(errtx);
+					JOptionPane.showMessageDialog(panel, "Error Data SQL gagal _"+errtx);
+					//ErrorInput(errtx);
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -293,10 +296,10 @@ public class InputData extends JFrame {
 public void sql() {
 	try {
 		
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection co = DriverManager.getConnection("jdbc:mysql://100.90.166.57:3306/hrd","hrdjerapah","hrdjerapah");
+		Class.forName(SqlUrl.Driver());
+		Connection co = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
 		Statement stats = co.createStatement();
-		String query = "select * from hrds";
+		String query = SqlUrl.dbms();
 		ResultSet res = stats.executeQuery(query);
 		ResultSetMetaData rsmd = res.getMetaData();
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
@@ -314,46 +317,6 @@ public void sql() {
 		catch (Exception e1) {
 			e1.printStackTrace();}
 		}
-public void ErrorInput(String en) {
-	getContentPane().removeAll();
-	getContentPane().repaint();
-	JDialog Error = new JDialog();
-	JPanel contentPanel = new JPanel();
-	JLabel lblNewLabel;
-	Error.setType(Type.POPUP);
-	Error.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-	Error.setBounds(100, 100, 450, 300);
-	Error.getContentPane().setLayout(new BorderLayout());
-	contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-	getContentPane().add(contentPanel, BorderLayout.CENTER);
-	{
-		lblNewLabel = new JLabel("ERROR!! "+en);
-	}
-	
-	JButton btnOk = new JButton("OK");
-	GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
-	gl_contentPanel.setHorizontalGroup(
-		gl_contentPanel.createParallelGroup(Alignment.LEADING)
-			.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
-				.addContainerGap(336, Short.MAX_VALUE)
-				.addComponent(btnOk)
-				.addGap(41))
-			.addGroup(gl_contentPanel.createSequentialGroup()
-				.addContainerGap()
-				.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-				.addGap(308))
-	);
-	gl_contentPanel.setVerticalGroup(
-		gl_contentPanel.createParallelGroup(Alignment.LEADING)
-			.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
-				.addContainerGap()
-				.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
-				.addPreferredGap(ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
-				.addComponent(btnOk, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap())
-	);
-	contentPanel.setLayout(gl_contentPanel);
-}
 
 }
 
