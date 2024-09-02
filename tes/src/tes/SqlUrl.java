@@ -23,4 +23,9 @@ public class SqlUrl {
 		String query = "select * from hrds";
 		return query;
 	}
+	public static String[] level() {
+		//database main system
+		String[] level = {"Administrator","Admin","Viewer"};
+		return level;
+	}
 }

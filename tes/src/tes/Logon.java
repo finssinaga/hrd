@@ -123,7 +123,7 @@ public class Logon extends JFrame {
 				String Userid = txtUser.getText();
 				String Passwd = txtPass.getText();
 				try {
-					String suclogin = "Selamat Datang "+txtUser.getText();
+					String suclogin = "Selamat Datang "+userid();
 					if (Userid.equals(userid())&&Passwd.equals(pass())) {
 						JOptionPane.showMessageDialog(panel,suclogin);
 						MainMenu.main(null);
