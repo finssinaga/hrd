@@ -9,6 +9,8 @@ import java.awt.Frame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
 import java.sql.Connection;
@@ -18,6 +20,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+
 import java.awt.Insets;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,6 +34,8 @@ import javax.swing.JScrollPane;
 public class MainMenu extends JFrame {
 	private JTable table;
 	private JPanel panel;
+	private JMenuItem mntmInputData;
+	private JMenuBar menuBar;
 
 	/**
 	 * Launch the application.
@@ -63,7 +69,7 @@ public class MainMenu extends JFrame {
 		JButton btnClose = new JButton("Close");
 		JButton loadSQL = new JButton("Buka Data");
 		
-		JMenuBar menuBar = new JMenuBar();
+		menuBar = new JMenuBar();
 		menuBar.setMargin(new Insets(2, 15, 2, 0));
 		setJMenuBar(menuBar);
 		
@@ -72,6 +78,10 @@ public class MainMenu extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setVisible(false);
+		
+		Logon k = new Logon();
+		JTextField usr = k.getPass();
+		usr.setText("anjay login");
 		
 		JMenuItem mntmTable = new JMenuItem("table");
 		mntmTable.addActionListener(new ActionListener() {
@@ -87,7 +97,7 @@ public class MainMenu extends JFrame {
 		
 		mnMaster.add(mntmTable);
 		
-		JMenuItem mntmInputData = new JMenuItem("input data");
+		mntmInputData = new JMenuItem("input data");
 		mntmInputData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				tes.InputData.main(null);
@@ -95,6 +105,7 @@ public class MainMenu extends JFrame {
 		});
 		mnMaster.add(mntmInputData);
 		getContentPane().setLayout(new BorderLayout(0, 0));
+		
 		
 		
 		loadSQL.addActionListener(new ActionListener() {
@@ -213,6 +224,12 @@ public class MainMenu extends JFrame {
 		getContentPane().add(panel);
 	}
 
+	public JMenuItem InputDat() {
+		return mntmInputData;
+	}
+	public JMenuBar getMenu() {
+		return menuBar;
+	}
 }
 
 

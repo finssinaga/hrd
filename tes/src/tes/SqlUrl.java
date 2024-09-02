@@ -1,5 +1,7 @@
 package tes;
 
+import javafx.scene.control.ComboBox;
+
 public class SqlUrl {
 	public static String Driver() {
 		String driver = "com.mysql.cj.jdbc.Driver";
@@ -25,7 +27,7 @@ public class SqlUrl {
 	}
 	public static String[] level() {
 		//database main system
-		String[] level = {"Administrator","Admin","Viewer"};
+		String[] level = {"administrator","admin","viewer"};
 		return level;
 	}
 }

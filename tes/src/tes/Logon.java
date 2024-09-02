@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.GroupLayout;
@@ -40,7 +42,7 @@ public class Logon extends JFrame {
 	private static final long serialVersionUID = 1;
 	private JPanel contentPane;
 	private JTextField txtUser;
-	private JTextField txtPass;
+	private JPasswordField txtPass;
 
 	/**
 	 * Launch the application.
@@ -74,7 +76,8 @@ public class Logon extends JFrame {
 		java.awt.Image resimg = img.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
 		icon = new ImageIcon(resimg);
 		
-		txtPass = new JTextField();
+		txtPass = new JPasswordField();
+		
 		JLabel lblUser = new JLabel("Nama User");
 		JButton btnLogin = new JButton("Login");
 		JPanel panel = new JPanel();
@@ -86,6 +89,11 @@ public class Logon extends JFrame {
 		lbIcon.setBackground(new Color(255, 255, 255));
 		lbIcon.setIcon((Icon) icon);
 		txtUser = new JTextField();
+		txtUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtPass.grabFocus();
+			}
+		});
 		txtUser.setColumns(10);
 		JLabel lblPassword = new JLabel("Password");
 		
@@ -134,17 +142,12 @@ public class Logon extends JFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (SQLException e) {
+					txtUser.setText(null);
+					txtPass.setText(null);
 					JOptionPane.showMessageDialog(panel, "login failed");
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				txtUser.setText(null);
-				txtPass.setText(null);
-			}
-		});
-		txtPass.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				btnLogin.doClick();
 			}
 		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
@@ -225,12 +228,17 @@ public class Logon extends JFrame {
 		);
 		panel.setLayout(gl_panel);
 		contentPane.setLayout(gl_contentPane);
+		txtPass.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnLogin.doClick();
+			}
+		});
 		
 		
 		
 	}
 public String userid() throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.cj.jdbc.Driver");
+		Class.forName(SqlUrl.Driver());
 		Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
 		Statement stat = con.createStatement();
 		String user = txtUser.getText()+"'";
@@ -241,14 +249,53 @@ public String userid() throws ClassNotFoundException, SQLException {
 	return Suser;
 }
 public String pass() throws ClassNotFoundException, SQLException {
-	Class.forName("com.mysql.cj.jdbc.Driver");
+	Class.forName(SqlUrl.Driver());
 	Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
 	Statement stat = con.createStatement();
 	String pwdx = txtPass.getText()+"'";
 	String query = "select * from user where pass ='"+pwdx;
 	ResultSet res = stat.executeQuery(query);
 	res.next();
-	String pw = res.getString(1);
+	String pw = res.getString(2);
 	return pw;
 }
+public String lvlAdms() throws ClassNotFoundException, SQLException {
+	Class.forName(SqlUrl.Driver());
+	Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
+	Statement stat = con.createStatement();
+	String pwdx = "'administrator'";
+	String query = "select * from user where grouplvl ="+pwdx;
+	ResultSet res = stat.executeQuery(query);
+	res.next();
+	String lvl = res.getString(3);
+	return lvl;
+}
+public String lvlAdmn() throws ClassNotFoundException, SQLException {
+	Class.forName(SqlUrl.Driver());
+	Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
+	Statement stat = con.createStatement();
+	String pwdx = "'admin'";
+	String query = "select * from user where grouplvl ="+pwdx;
+	ResultSet res = stat.executeQuery(query);
+	res.next();
+	String lvl = res.getString(3);
+	return lvl;
+}
+public String lvlVwr() throws ClassNotFoundException, SQLException {
+	Class.forName(SqlUrl.Driver());
+	Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
+	Statement stat = con.createStatement();
+	String pwdx = "'viewer'";
+	String query = "select * from user where grouplvl ="+pwdx;
+	ResultSet res = stat.executeQuery(query);
+	res.next();
+	String lvl = res.getString(3);
+	return lvl;
+}
+	public JTextField getUser() {
+		return txtUser;
+	}
+	public JPasswordField getPass() {
+		return txtPass;
+	}
 }

@@ -22,7 +22,6 @@ import javax.swing.DefaultComboBoxModel;
 public class AddUsr extends JPanel {
 	private JTextField txtPassword;
 	private JTextField txtUsername;
-	private JTextField txtGroup;
 
 	/**
 	 * Create the panel.
@@ -43,16 +42,12 @@ public class AddUsr extends JPanel {
 		txtUsername = new JTextField();
 		txtUsername.setColumns(10);
 		
-		txtGroup = new JTextField();
-		txtGroup.setColumns(10);
-		
 		JButton btnSave = new JButton("save");
 		
 		JLabel lblPressFTo = new JLabel("press f2 to close");
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new SqlUrl().level()));
-		txtGroup.setText();
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -80,10 +75,9 @@ public class AddUsr extends JPanel {
 											.addComponent(label_3, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)))
 									.addGap(18)
 									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(txtUsername, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
-										.addComponent(txtPassword, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
-										.addComponent(txtGroup, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
-										.addComponent(comboBox, 0, 159, Short.MAX_VALUE))))
+										.addComponent(comboBox, 0, 200, Short.MAX_VALUE)
+										.addComponent(txtUsername, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+										.addComponent(txtPassword, GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
 							.addGap(160))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(11)
@@ -106,10 +100,8 @@ public class AddUsr extends JPanel {
 					.addGap(17)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_3)
-						.addComponent(txtGroup, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblPressFTo))
@@ -126,7 +118,7 @@ public class AddUsr extends JPanel {
 					PreparedStatement prep = con.prepareStatement(query);
 					prep.setString(1, txtUsername.getText());
 					prep.setString(2, txtPassword.getText());
-					prep.setString(3, txtGroup.getText());
+					prep.setString(3, comboBox.getSelectedItem().toString());
 					prep.execute();
 					prep.close();
 					
