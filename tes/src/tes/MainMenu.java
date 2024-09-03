@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.awt.print.PrinterException;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -58,6 +59,8 @@ public class MainMenu extends JFrame {
 	 * @throws Exception 
 	 */
 	public MainMenu() {
+		File chk = new File(SqlUrl.dir());
+		String 
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);

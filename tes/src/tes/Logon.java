@@ -22,6 +22,8 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
+import java.io.File;
+import java.io.IOException;
 import java.io.Reader;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -135,6 +137,15 @@ public class Logon extends JFrame {
 					if (Userid.equals(userid())&&Passwd.equals(pass())) {
 						JOptionPane.showMessageDialog(panel,suclogin);
 						MainMenu.main(null);
+						String nmfs = lvlAdms();
+						File f = new File(SqlUrl.dir(),nmfs);
+						try {
+							f.createNewFile();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						System.out.println("Working Directory = " + System.getProperty("user.dir"));
 					}else {
 						JOptionPane.showMessageDialog(panel, "login failed");
 					}
@@ -147,7 +158,7 @@ public class Logon extends JFrame {
 					JOptionPane.showMessageDialog(panel, "login failed");
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				} 
 			}
 		});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
@@ -235,7 +246,6 @@ public class Logon extends JFrame {
 		});
 		
 		
-		
 	}
 public String userid() throws ClassNotFoundException, SQLException {
 		Class.forName(SqlUrl.Driver());
@@ -263,35 +273,14 @@ public String lvlAdms() throws ClassNotFoundException, SQLException {
 	Class.forName(SqlUrl.Driver());
 	Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
 	Statement stat = con.createStatement();
-	String pwdx = "'administrator'";
-	String query = "select * from user where grouplvl ="+pwdx;
+	String pwdx = "'"+txtUser.getText()+"'";
+	String query = "select * from user where userid ="+pwdx;
 	ResultSet res = stat.executeQuery(query);
 	res.next();
 	String lvl = res.getString(3);
 	return lvl;
 }
-public String lvlAdmn() throws ClassNotFoundException, SQLException {
-	Class.forName(SqlUrl.Driver());
-	Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
-	Statement stat = con.createStatement();
-	String pwdx = "'admin'";
-	String query = "select * from user where grouplvl ="+pwdx;
-	ResultSet res = stat.executeQuery(query);
-	res.next();
-	String lvl = res.getString(3);
-	return lvl;
-}
-public String lvlVwr() throws ClassNotFoundException, SQLException {
-	Class.forName(SqlUrl.Driver());
-	Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
-	Statement stat = con.createStatement();
-	String pwdx = "'viewer'";
-	String query = "select * from user where grouplvl ="+pwdx;
-	ResultSet res = stat.executeQuery(query);
-	res.next();
-	String lvl = res.getString(3);
-	return lvl;
-}
+
 	public JTextField getUser() {
 		return txtUser;
 	}

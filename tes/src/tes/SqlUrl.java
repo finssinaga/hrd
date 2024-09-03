@@ -30,4 +30,8 @@ public class SqlUrl {
 		String[] level = {"administrator","admin","viewer"};
 		return level;
 	}
+	public static String dir() {
+		String dis = System.getProperty("user.dir");
+		return dis;
+	}
 }
