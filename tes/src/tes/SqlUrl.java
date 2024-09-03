@@ -1,5 +1,20 @@
 package tes;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Reader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Properties;
+
+import javax.swing.JOptionPane;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import javafx.scene.control.ComboBox;
 
 public class SqlUrl {
@@ -8,8 +23,34 @@ public class SqlUrl {
 		return driver;
 	}
 	public static String url(){
-		String url ="jdbc:mysql://100.90.166.57:3306/hrd";
+		String url;
+		Properties urls = new Properties();
+		String config = System.getProperty("user.dir")+"/bin/hrd.config";
+		
+			try (FileInputStream load = new FileInputStream(config)){
+				urls.load(load);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			url = "jdbc:mysql://"+urls.getProperty("server.url")+":"+urls.getProperty("server.port")+"/"+urls.getProperty("server.database");
+			
 		return url;
+	}
+	
+	public static Object config(String configs, String key){
+		Object conf;
+		Properties urls = new Properties();
+		String config = System.getProperty("user.dir")+"/bin/hrd.config";
+		
+			try (FileInputStream load = new FileInputStream(config)){
+				urls.load(load);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			conf = urls.setProperty(configs, key);
+			return conf;
 	}
 	public static String userpass() {
 		String userpass = "hrdjerapah";
@@ -27,11 +68,34 @@ public class SqlUrl {
 	}
 	public static String[] level() {
 		//database main system
-		String[] level = {"administrator","admin","viewer"};
+		String[] level = {"administrator","operator","viewer"};
 		return level;
 	}
 	public static String dir() {
 		String dis = System.getProperty("user.dir");
 		return dis;
 	}
+	public static boolean admin(String[] arra, String nama) {
+		boolean che = ArrayUtils.contains(arra, nama);
+		return che;
+	}
+	public static Object sqlGet(String query, int columnIndex) {
+		String sql = null;
+		try {
+			Class.forName(Driver());
+			Connection con = DriverManager.getConnection(url(),userpass(),userpass());
+			Statement stat = con.createStatement();
+			String qu = query;
+			ResultSet res = stat.executeQuery(qu);
+			while (res.next()) {
+				 sql = res.getString(columnIndex);
+				
+			}
+			 
+		}catch (SQLException | ClassNotFoundException eror) {
+			
+		}
+		return sql;
+	}
+	
 }

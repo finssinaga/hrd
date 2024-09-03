@@ -165,7 +165,7 @@ public class InputData extends JFrame {
 						prep.setString(3, namapart);
 						prep.setString(4, merkpart);
 						prep.setString(5, user);
-						prep.setString(7, keterangan);
+						prep.setString(6, keterangan);
 						
 						prep.execute();
 						prep.close();

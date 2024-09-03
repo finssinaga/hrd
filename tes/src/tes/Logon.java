@@ -145,9 +145,10 @@ public class Logon extends JFrame {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						System.out.println("Working Directory = " + System.getProperty("user.dir"));
+						System.out.println("Working Directory = " + SqlUrl.dir());
 					}else {
-						JOptionPane.showMessageDialog(panel, "login failed");
+						JOptionPane.showMessageDialog(panel, "login gagal");
+						System.out.println(userid());
 					}
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -248,36 +249,19 @@ public class Logon extends JFrame {
 		
 	}
 public String userid() throws ClassNotFoundException, SQLException {
-		Class.forName(SqlUrl.Driver());
-		Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
-		Statement stat = con.createStatement();
-		String user = txtUser.getText()+"'";
-		String query = "select * from user where userid ='"+user;
-		ResultSet res = stat.executeQuery(query);
-		res.next();
-		String Suser = res.getString(1);
+		String query = "select * from user where userid = "+"'"+txtUser.getText()+"'";
+		String Suser = SqlUrl.sqlGet(query, 1).toString();
+		
 	return Suser;
 }
 public String pass() throws ClassNotFoundException, SQLException {
-	Class.forName(SqlUrl.Driver());
-	Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
-	Statement stat = con.createStatement();
-	String pwdx = txtPass.getText()+"'";
-	String query = "select * from user where pass ='"+pwdx;
-	ResultSet res = stat.executeQuery(query);
-	res.next();
-	String pw = res.getString(2);
+	String query = "select * from user where pass = "+"'"+txtPass.getText()+"'";
+	String pw = SqlUrl.sqlGet(query, 2).toString();
 	return pw;
 }
 public String lvlAdms() throws ClassNotFoundException, SQLException {
-	Class.forName(SqlUrl.Driver());
-	Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
-	Statement stat = con.createStatement();
-	String pwdx = "'"+txtUser.getText()+"'";
-	String query = "select * from user where userid ="+pwdx;
-	ResultSet res = stat.executeQuery(query);
-	res.next();
-	String lvl = res.getString(3);
+	String query = "select * from user where userid = "+"'"+txtUser.getText()+"'";
+	String lvl = SqlUrl.sqlGet(query, 3).toString();
 	return lvl;
 }
 

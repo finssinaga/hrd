@@ -2,7 +2,7 @@ package tes;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
+import org.apache.commons.lang3.ArrayUtils;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Frame;
@@ -19,6 +19,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -59,8 +61,7 @@ public class MainMenu extends JFrame {
 	 * @throws Exception 
 	 */
 	public MainMenu() {
-		File chk = new File(SqlUrl.dir());
-		String 
+		
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -225,14 +226,36 @@ public class MainMenu extends JFrame {
 		);
 		panel.setLayout(gl_panel);
 		getContentPane().add(panel);
+		
+		
+		
+			File chk = new File(SqlUrl.dir());
+			String[] cnk = chk.list();
+			String nm = "administrator";
+			boolean ada = SqlUrl.admin(cnk, nm);
+			if (ada == true) {
+				mntmTable.setVisible(false);
+			}
+			
+			for (int i=0;i<SqlUrl.level().length;i++) {
+				StringBuilder resl = new StringBuilder();
+				String[] del = new String[SqlUrl.level().length];
+				resl.append(del[i]=SqlUrl.level()[i]);
+				
+				File dlt = new File(SqlUrl.dir(),resl.toString());
+				System.out.println(dlt);
+				dlt.deleteOnExit();
+			}
+		
+	
 	}
-
 	public JMenuItem InputDat() {
 		return mntmInputData;
 	}
 	public JMenuBar getMenu() {
 		return menuBar;
 	}
+	
 }
 
 

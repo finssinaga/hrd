@@ -77,11 +77,8 @@ public class AdminPanel extends JFrame {
 		JMenu mnDatabase = new JMenu("database");
 		menuBar.add(mnDatabase);
 		
-		JMenuItem mntmSelectMainDatabase = new JMenuItem("main database");
-		mnDatabase.add(mntmSelectMainDatabase);
-		
-		JMenuItem mntmLoginDatabase = new JMenuItem("login database");
-		mnDatabase.add(mntmLoginDatabase);
+		JMenuItem mntmConfig = new JMenuItem("configuration");
+		mnDatabase.add(mntmConfig);
 		
 		JMenu mnUpdate = new JMenu("update");
 		menuBar.add(mnUpdate);
