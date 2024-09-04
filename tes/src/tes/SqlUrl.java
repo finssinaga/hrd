@@ -1,9 +1,7 @@
 package tes;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,11 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-import javax.swing.JOptionPane;
-
 import org.apache.commons.lang3.ArrayUtils;
-
-import javafx.scene.control.ComboBox;
 
 public class SqlUrl {
 	public static String Driver() {
