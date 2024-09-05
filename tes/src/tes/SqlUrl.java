@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
+import java.util.Vector;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -16,12 +18,14 @@ public class SqlUrl {
 		String driver = "com.mysql.cj.jdbc.Driver";
 		return driver;
 	}
+	public static String confdir() {
+		String config = System.getProperty("user.dir")+"/bin/hrd.config";
+		return config;
+	}
 	public static String url(){
 		String url;
 		Properties urls = new Properties();
-		String config = System.getProperty("user.dir")+"/bin/hrd.config";
-		
-			try (FileInputStream load = new FileInputStream(config)){
+			try (FileInputStream load = new FileInputStream(confdir())){
 				urls.load(load);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -46,9 +50,29 @@ public class SqlUrl {
 			conf = urls.setProperty(configs, key);
 			return conf;
 	}
-	public static String userpass() {
-		String userpass = "hrdjerapah";
-		return userpass;
+	public static String user() {
+		String url;
+		Properties urls = new Properties();
+			try (FileInputStream load = new FileInputStream(confdir())){
+				urls.load(load);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			url = urls.getProperty("server.user");
+			return url;
+	}
+	public static String pass() {
+		String url;
+		Properties urls = new Properties();
+			try (FileInputStream load = new FileInputStream(confdir())){
+				urls.load(load);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			url=urls.getProperty("server.password");
+			return url;
 	}
 	public static String usrlogin() {
 		//database user login information
@@ -77,7 +101,7 @@ public class SqlUrl {
 		String sql = null;
 		try {
 			Class.forName(Driver());
-			Connection con = DriverManager.getConnection(url(),userpass(),userpass());
+			Connection con = DriverManager.getConnection(url(),user(),pass());
 			Statement stat = con.createStatement();
 			String qu = query;
 			ResultSet res = stat.executeQuery(qu);
@@ -90,6 +114,29 @@ public class SqlUrl {
 			
 		}
 		return sql;
+	}
+	public static String[] sqlGetColumn(String query) {
+		String[] cn = {};
+		
+		try {
+			Class.forName(Driver());
+			Connection con = DriverManager.getConnection(url(),user(),pass());
+			Statement stat = con.createStatement();
+			ResultSet res = stat.executeQuery(query);
+			ResultSetMetaData resmd = res.getMetaData();
+			int col=resmd.getColumnCount();
+			for (int i=1;i<col;i++) {
+			cn[i]=resmd.getColumnName(i);
+			
+			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cn;
 	}
 	
 }

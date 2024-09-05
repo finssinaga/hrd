@@ -114,7 +114,7 @@ public class AddUsr extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Class.forName(SqlUrl.Driver());
-					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
+					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
 					String query = "insert into user(`userId`, `pass`,`grouplvl`) values (?,?,?)";
 					PreparedStatement prep = con.prepareStatement(query);
 					prep.setString(1, txtUsername.getText());

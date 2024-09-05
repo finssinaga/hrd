@@ -74,7 +74,7 @@ public class GroupManager extends JPanel {
 	}
 	public String userid() throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
+		Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
 		Statement stat = con.createStatement();
 		String user = "'"+getComboBox()+"'";
 		String query = "select * from user where userid ="+user;

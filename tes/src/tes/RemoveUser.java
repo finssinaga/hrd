@@ -153,7 +153,7 @@ public class RemoveUser extends JPanel {
 					rmv.setRowCount(0);
 					String user = "'"+textSearch.getText()+"'";
 					Class.forName(SqlUrl.Driver());
-					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
+					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
 					Statement stat = con.createStatement();
 					String query = SqlUrl.usrlogin()+" where userId ="+user;
 					ResultSet rest = stat.executeQuery(query);
@@ -187,7 +187,7 @@ public class RemoveUser extends JPanel {
 					rmv.setRowCount(0);
 					String user = "'"+textSearch.getText()+"'";
 					Class.forName(SqlUrl.Driver());
-					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
+					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
 					Statement stat = con.createStatement();
 					String query = SqlUrl.usrlogin()+" where grouplvl ="+user;
 					ResultSet rest = stat.executeQuery(query);
@@ -241,7 +241,7 @@ public class RemoveUser extends JPanel {
 				rmgroup = txtRmGroup.getText();
 				try {
 					Class.forName(SqlUrl.Driver());
-					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
+					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.user());
 					String query = "DELETE FROM `hrd`.`user` WHERE  `userId`='"+rmuser+"' AND `pass`='"+rmpass+"' AND `grouplvl`='"+rmgroup+"' LIMIT 1";
 					Statement stat = con.createStatement();
 					stat.executeUpdate(query);

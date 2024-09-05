@@ -125,7 +125,7 @@ public class InputData extends JPanel {
 					DefaultTableModel insert = (DefaultTableModel)table.getModel();
 					
 					Class.forName(SqlUrl.Driver());
-					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
+					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
 					for (int i=0; i<insert.getRowCount();i++) {
 						tanggal = insert.getValueAt(i, 0).toString();
 						jeniskend = insert.getValueAt(i, 1).toString();
@@ -285,7 +285,7 @@ public void sql() {
 	try {
 		
 		Class.forName(SqlUrl.Driver());
-		Connection co = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
+		Connection co = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
 		Statement stats = co.createStatement();
 		String query = SqlUrl.dbms();
 		ResultSet res = stats.executeQuery(query);

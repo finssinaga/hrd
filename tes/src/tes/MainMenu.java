@@ -7,6 +7,8 @@ import java.awt.Frame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.event.ActionEvent;
@@ -20,6 +22,7 @@ public class MainMenu extends JFrame {
 	private JMenuItem mntmInputData;
 	private JMenuBar menuBar;
 	private JButton btnX;
+	private JMenuItem mntmMasterBarang;
 
 	/**
 	 * Launch the application.
@@ -54,7 +57,6 @@ public class MainMenu extends JFrame {
 		
 		JMenu mnMaster = new JMenu("master");
 		menuBar.add(mnMaster);
-		
 		JMenuItem mntmTable = new JMenuItem("table");
 		mntmTable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -101,7 +103,29 @@ public class MainMenu extends JFrame {
 		});
 		mnMaster.add(mntmInputData);
 		
+		mntmMasterBarang = new JMenuItem("master barang");
+		mntmMasterBarang.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				MasterStok mstr = new MasterStok(MainMenu.this);
+				GroupLayout groupLayout = new GroupLayout(getContentPane());
+		        groupLayout.setHorizontalGroup(
+		            groupLayout.createParallelGroup(Alignment.LEADING)
+		                .addComponent(mstr, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+		        );
+		        groupLayout.setVerticalGroup(
+		            groupLayout.createParallelGroup(Alignment.LEADING)
+		                .addComponent(mstr, GroupLayout.PREFERRED_SIZE, 241, Short.MAX_VALUE)
+		        );
+		        getContentPane().add(mstr);
+		        getContentPane().setLayout(groupLayout);
+		        getContentPane().revalidate();
+		        getContentPane().repaint();
+			}
+		});
+		mnMaster.add(mntmMasterBarang);
+		
 		btnX = new JButton("x");
+		btnX.setVisible(false);
 		btnX.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				getContentPane().removeAll();

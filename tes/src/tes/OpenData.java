@@ -47,7 +47,7 @@ public class OpenData extends JPanel {
 					DefaultTableModel del = (DefaultTableModel) table.getModel();
 					del.setRowCount(0);
 					Class.forName(SqlUrl.Driver());
-					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.userpass(),SqlUrl.userpass());
+					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
 					Statement stat = con.createStatement();
 					String query = SqlUrl.dbms();
 					ResultSet res = stat.executeQuery(query);
