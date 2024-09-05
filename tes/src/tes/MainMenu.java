@@ -1,44 +1,25 @@
 package tes;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import org.apache.commons.lang3.ArrayUtils;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Frame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-
 import java.awt.event.ActionListener;
-import java.awt.print.PrinterException;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.awt.event.ActionEvent;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-
 import java.awt.Insets;
-import javax.swing.table.DefaultTableModel;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JScrollPane;
 
 public class MainMenu extends JFrame {
-	private JPanel panel;
+	
 	private JMenuItem mntmInputData;
 	private JMenuBar menuBar;
-	private JPanel opds;
+	private JButton btnX;
 
 	/**
 	 * Launch the application.
@@ -61,10 +42,11 @@ public class MainMenu extends JFrame {
 	 * @throws Exception 
 	 */
 	public MainMenu() {
+		setVisible(true);
 		
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		
 		
 		menuBar = new JMenuBar();
 		menuBar.setMargin(new Insets(2, 15, 2, 0));
@@ -73,28 +55,26 @@ public class MainMenu extends JFrame {
 		JMenu mnMaster = new JMenu("master");
 		menuBar.add(mnMaster);
 		
-		OpenData opd = new OpenData();
-		JPanel opds =((OpenData) opd).getOpenData();
-		
 		JMenuItem mntmTable = new JMenuItem("table");
 		mntmTable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				OpenData opds = new OpenData(MainMenu.this);
 				GroupLayout groupLayout = new GroupLayout(getContentPane());
-				groupLayout.setHorizontalGroup(
-					groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(opds, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
-				);
-				groupLayout.setVerticalGroup(
-					groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(opds, GroupLayout.PREFERRED_SIZE, 241, Short.MAX_VALUE)
-				);
-				getContentPane().setLayout(groupLayout);
-				
-				getContentPane().add(opds);
-				opds.setVisible(true);
+		        groupLayout.setHorizontalGroup(
+		            groupLayout.createParallelGroup(Alignment.LEADING)
+		                .addComponent(opds, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+		        );
+		        groupLayout.setVerticalGroup(
+		            groupLayout.createParallelGroup(Alignment.LEADING)
+		                .addComponent(opds, GroupLayout.PREFERRED_SIZE, 241, Short.MAX_VALUE)
+		        );
+		        getContentPane().add(opds);
+		        getContentPane().setLayout(groupLayout);
+		        getContentPane().revalidate();
+		        getContentPane().repaint();
+		        
 			}
-		});
+			});
 		
 		
 		mnMaster.add(mntmTable);
@@ -102,13 +82,48 @@ public class MainMenu extends JFrame {
 		mntmInputData = new JMenuItem("input data");
 		mntmInputData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tes.InputData.main(null);
+				JPanel ipd = new InputData(MainMenu.this);
+				
+				GroupLayout groupLayout = new GroupLayout(getContentPane());
+		        groupLayout.setHorizontalGroup(
+		            groupLayout.createParallelGroup(Alignment.LEADING)
+		                .addComponent(ipd, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+		        );
+		        groupLayout.setVerticalGroup(
+		            groupLayout.createParallelGroup(Alignment.LEADING)
+		                .addComponent(ipd, GroupLayout.PREFERRED_SIZE, 241, Short.MAX_VALUE)
+		        );
+		        getContentPane().add(ipd);
+		        getContentPane().setLayout(groupLayout);
+		        getContentPane().revalidate();
+		        getContentPane().repaint();
 			}
 		});
 		mnMaster.add(mntmInputData);
-		getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		
+		btnX = new JButton("x");
+		btnX.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getContentPane().removeAll();
+				getContentPane().repaint();
+			}
+		});
+		GroupLayout groupLayout = new GroupLayout(getContentPane());
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addContainerGap(385, Short.MAX_VALUE)
+					.addComponent(btnX)
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(btnX)
+					.addContainerGap(207, Short.MAX_VALUE))
+		);
+		getContentPane().setLayout(groupLayout);
 		
 			File chk = new File(SqlUrl.dir());
 			String[] cnk = chk.list();
@@ -136,14 +151,13 @@ public class MainMenu extends JFrame {
 	public JMenuBar getMenu() {
 		return menuBar;
 	}
-	public JPanel gtOpenData() {
-		return opds;
+	public JButton btX() {
+		return btnX;
 	}
-	public void clrwdw() {
-		MainMenu frm = new MainMenu();
-		frm.remove(comp);
+	public void cls() {
+		getContentPane().removeAll();
+		getContentPane().repaint();
 	}
-	
 }
 
 

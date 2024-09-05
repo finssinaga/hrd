@@ -23,13 +23,12 @@ import javax.swing.DefaultComboBoxModel;
 public class AddUsr extends JPanel {
 	private JTextField txtPassword;
 	private JTextField txtUsername;
-	private JPanel panel;
+	
 
 	/**
 	 * Create the panel.
 	 */
 	public AddUsr() {
-		JPanel panel = new JPanel();
 		JLabel lblAddUser = new JLabel("ADD USER");
 		
 		JLabel label_1 = new JLabel("username");
@@ -51,9 +50,7 @@ public class AddUsr extends JPanel {
 		JComboBox comboBox = new JComboBox();
 		comboBox.setModel(new DefaultComboBoxModel(new SqlUrl().level()));
 		
-		JButton btnClose = new JButton("close");
-		
-		GroupLayout groupLayout = new GroupLayout(panel);
+		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
@@ -79,12 +76,10 @@ public class AddUsr extends JPanel {
 											.addComponent(label_3, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)))
 									.addGap(18)
 									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(comboBox, 0, 159, Short.MAX_VALUE)
-										.addComponent(txtUsername, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
-										.addComponent(txtPassword, GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE))))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnClose)
-							.addGap(66))
+										.addComponent(comboBox, 0, 211, Short.MAX_VALUE)
+										.addComponent(txtUsername, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+										.addComponent(txtPassword, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE))))
+							.addGap(129))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(11)
 							.addComponent(lblAddUser, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
@@ -107,20 +102,13 @@ public class AddUsr extends JPanel {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(label_3)
 						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnSave, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblPressFTo)
-						.addComponent(btnClose))
+						.addComponent(lblPressFTo))
 					.addGap(58))
 		);
-		panel.setLayout(groupLayout);
-		
-		btnClose.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent close) {
-				
-			}
-		});
+		this.setLayout(groupLayout);
 		
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -145,5 +133,10 @@ public class AddUsr extends JPanel {
 			}
 		});
 
+	}
+
+	public void setPreferredSize(int i, int j) {
+		// TODO Auto-generated method stub
+		
 	}
 }

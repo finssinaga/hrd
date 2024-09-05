@@ -22,17 +22,22 @@ import java.awt.BorderLayout;
 public class OpenData extends JPanel {
 
 	private JTable table;
-	private JPanel panel;
+	private JButton cls;
+	private MainMenu m;
 	/**
 	 * Create the panel.
 	 */
-	public OpenData() {
-		panel = new JPanel();
-
+	public OpenData(MainMenu m){
+		this.m = m;
+		this.cls = m.btX();
+		initComponent();
+	}
+	
+	private void initComponent() {
+		
 		table = new JTable();
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.setVisible(false);
-		JButton btnClose = new JButton("Close");
 		JButton loadSQL = new JButton("Buka Data");
 		
 		
@@ -78,13 +83,6 @@ public class OpenData extends JPanel {
 				}
 			}
 		});
-
-		btnClose.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			MainMenu clr = new MainMenu();
-			clr.clrwdw();
-			}
-		});
 		
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -111,21 +109,27 @@ public class OpenData extends JPanel {
 			}
 		});
 		
-		GroupLayout gl_panel = new GroupLayout(panel);
+		JButton btnX = new JButton("x");
+		btnX.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cls.doClick();
+			}
+		});
+		GroupLayout gl_panel = new GroupLayout(this);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 1342, Short.MAX_VALUE)
+						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 430, Short.MAX_VALUE)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(loadSQL)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(btnPrint)
-							.addPreferredGap(ComponentPlacement.RELATED, 1028, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
 							.addComponent(btnCancel)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnClose)))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnX)))
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
@@ -134,17 +138,13 @@ public class OpenData extends JPanel {
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(loadSQL)
-						.addComponent(btnClose)
 						.addComponent(btnCancel)
-						.addComponent(btnPrint))
+						.addComponent(btnPrint)
+						.addComponent(btnX))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
 					.addGap(36))
 		);
-		panel.setLayout(gl_panel);
+		this.setLayout(gl_panel);
 	}
-	
-	public JPanel getOpenData() {
-		return panel;
-	}
-	}
+}		// TODO Auto-generated method stub

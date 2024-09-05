@@ -32,9 +32,9 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-public class InputData extends JFrame {
+public class InputData extends JPanel {
 
-	private JPanel contentPane;
+	
 	private JTable table;
 	/**
 	 * @wbp.nonvisual location=328,259
@@ -46,28 +46,12 @@ public class InputData extends JFrame {
 	private JTextField merkPart;
 	private JTextField nmUser;
 	private JTextField txtKet;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					InputData frame = new InputData();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 * @return 
-	 */
-	public InputData() {
+	private MainMenu mn;
+	private JButton cls;
+	
+	public InputData(MainMenu mn) {
+		this.mn = mn;
+		this.cls = mn.btX();
 		DatePicker datePicker = new DatePicker();
 		datePicker.setSettings(datePickerSettings);
 		JTextField datadate = datePicker.getComponentDateTextField();
@@ -76,13 +60,6 @@ public class InputData extends JFrame {
 		datePickerSettings.setVisibleNextYearButton(false);
 		datePickerSettings.setAllowKeyboardEditing(false);
 		datePickerSettings.setFormatForDatesCommonEra(DateTimeFormatter.ofPattern("uuuu-MM-dd"));
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setExtendedState(MAXIMIZED_BOTH);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
 		
 		noPlat = new JTextField();
 		noPlat.setColumns(10);		
@@ -108,8 +85,7 @@ public class InputData extends JFrame {
 		btnSave.setEnabled(false);
 		JButton btnTambah = new JButton("Tambah");
 		JButton btnCancel = new JButton("Cancel");
-		JPanel panel = new JPanel();
-		contentPane.add(panel, BorderLayout.CENTER);		
+				
 		JScrollPane scrollPane = new JScrollPane();
 		
 		
@@ -175,7 +151,7 @@ public class InputData extends JFrame {
 					}
 				catch (SQLException ins) {
 					String errtx = ins.toString();
-					JOptionPane.showMessageDialog(panel, "Error Data SQL gagal _"+errtx);
+					JOptionPane.showMessageDialog(scrollPane, "SQL error");
 					//ErrorInput(errtx);
 				} catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
@@ -195,57 +171,68 @@ public class InputData extends JFrame {
 				int rowc = canc.getRowCount();
 				if (rowc<1) {
 					btnSave.setEnabled(false);
+					
 				}else {
 					btnSave.setEnabled(true);
 				}
 			}
 		});
 		
+		JButton btnX = new JButton("x");
+		btnX.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cls.doClick();
+			}
+		});
 		
-		GroupLayout gl_panel = new GroupLayout(panel);
+		
+		GroupLayout gl_panel = new GroupLayout(this);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(btnTambah)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnSave)
-							.addPreferredGap(ComponentPlacement.RELATED, 238, Short.MAX_VALUE)
-							.addComponent(btnCancel)
-							.addGap(14))
+							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+							.addGap(49))
 						.addGroup(gl_panel.createSequentialGroup()
-							.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-								.addComponent(lblNamaUser)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_panel.createSequentialGroup()
 									.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-										.addComponent(lblTanggal)
-										.addComponent(lblMerkPart)
-										.addComponent(lblNamaPart)
-										.addComponent(lblNoPlat))
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblNamaUser)
 										.addGroup(gl_panel.createSequentialGroup()
-											.addComponent(merkPart)
-											.addGap(11))
-										.addGroup(gl_panel.createSequentialGroup()
-											.addComponent(namaPart)
-											.addGap(11))
-										.addGroup(gl_panel.createSequentialGroup()
-											.addComponent(noPlat)
-											.addGap(11))
-										.addComponent(datePicker, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-									.addGap(26)
-									.addComponent(lblKeterangan)))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+												.addComponent(lblTanggal)
+												.addComponent(lblMerkPart)
+												.addComponent(lblNamaPart)
+												.addComponent(lblNoPlat))
+											.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_panel.createSequentialGroup()
+													.addComponent(merkPart, GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+													.addGap(11))
+												.addGroup(gl_panel.createSequentialGroup()
+													.addComponent(namaPart, GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+													.addGap(11))
+												.addGroup(gl_panel.createSequentialGroup()
+													.addComponent(noPlat, GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+													.addGap(11))
+												.addComponent(datePicker, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+											.addGap(26)
+											.addComponent(lblKeterangan)))
+									.addPreferredGap(ComponentPlacement.UNRELATED))
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(btnTambah)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnSave)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnCancel)
+									.addGap(71)))
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(txtKet)
-								.addComponent(nmUser))
-							.addGap(65))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-							.addGap(49)))
+								.addComponent(btnX, Alignment.TRAILING)
+								.addComponent(txtKet, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+								.addComponent(nmUser, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+							.addGap(65)))
 					.addGap(0))
 		);
 		gl_panel.setVerticalGroup(
@@ -255,6 +242,7 @@ public class InputData extends JFrame {
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnTambah)
 						.addComponent(btnSave)
+						.addComponent(btnX)
 						.addComponent(btnCancel))
 					.addGap(4)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
@@ -283,12 +271,12 @@ public class InputData extends JFrame {
 								.addComponent(merkPart, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblMerkPart))))
 					.addGap(6)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
 					.addGap(36))
 		);
 		
 		scrollPane.setViewportView(table);
-		panel.setLayout(gl_panel);
+		this.setLayout(gl_panel);
 		
 		
 		
