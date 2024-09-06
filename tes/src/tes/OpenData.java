@@ -17,7 +17,6 @@ import javax.swing.JTable;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
 
 public class OpenData extends JPanel {
 

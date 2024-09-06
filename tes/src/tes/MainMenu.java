@@ -3,6 +3,8 @@ package tes;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import java.awt.Frame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -22,7 +24,8 @@ public class MainMenu extends JFrame {
 	private JMenuItem mntmInputData;
 	private JMenuBar menuBar;
 	private JButton btnX;
-	private JMenuItem mntmMasterBarang;
+	private JMenuItem mntmMasterBarang;                                                                                                                                                    
+	private String logs;
 
 	/**
 	 * Launch the application.
@@ -46,11 +49,11 @@ public class MainMenu extends JFrame {
 	 */
 	public MainMenu() {
 		setVisible(true);
-		
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		
+		Logon lgs = Logon.getlg();
+		JOptionPane.showMessageDialog(menuBar, lgs.getUser());
 		menuBar = new JMenuBar();
 		menuBar.setMargin(new Insets(2, 15, 2, 0));
 		setJMenuBar(menuBar);
@@ -102,10 +105,11 @@ public class MainMenu extends JFrame {
 			}
 		});
 		mnMaster.add(mntmInputData);
-		
+		this.logs = Logon.getlg().getUser();
 		mntmMasterBarang = new JMenuItem("master barang");
 		mntmMasterBarang.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				MasterStok mstr = new MasterStok(MainMenu.this);
 				GroupLayout groupLayout = new GroupLayout(getContentPane());
 		        groupLayout.setHorizontalGroup(

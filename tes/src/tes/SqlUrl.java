@@ -116,23 +116,24 @@ public class SqlUrl {
 		return sql;
 	}
 	public static String[] sqlGetColumn(String query) {
-		String[] cn = {};
-		
+		String[] cn = null;
+		int col = 0;
 		try {
 			Class.forName(Driver());
 			Connection con = DriverManager.getConnection(url(),user(),pass());
 			Statement stat = con.createStatement();
 			ResultSet res = stat.executeQuery(query);
 			ResultSetMetaData resmd = res.getMetaData();
-			int col=resmd.getColumnCount();
-			for (int i=1;i<col;i++) {
-			cn[i]=resmd.getColumnName(i);
+			col=resmd.getColumnCount();
+			cn=new String[col-1];
+			for (int i=0;i<col;i++) {
+			cn[i]=resmd.getColumnName(i+2);
 			
 			}
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (SQLException e) {
+		} catch (SQLException | java.lang.ArrayIndexOutOfBoundsException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

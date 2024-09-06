@@ -45,6 +45,13 @@ public class Logon extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtUser;
 	private JPasswordField txtPass;
+	private static Logon lgn;
+	public static synchronized Logon getlg() {
+		if (lgn == null ) {
+			lgn= new Logon();
+		}
+		return lgn;
+	}
 
 	/**
 	 * Launch the application.
@@ -52,12 +59,10 @@ public class Logon extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					Logon frame = new Logon();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				
+				Logon frame = Logon.getlg();
+				frame.setVisible(true);
+				
 			}
 		});
 	}
@@ -265,10 +270,11 @@ public String lvlAdms() throws ClassNotFoundException, SQLException {
 	return lvl;
 }
 
-	public JTextField getUser() {
-		return txtUser;
+	public String getUser() {
+		return txtUser.getText();
 	}
-	public JPasswordField getPass() {
-		return txtPass;
+	public String getPass() {
+		return txtPass.getText();
 	}
+	
 }
