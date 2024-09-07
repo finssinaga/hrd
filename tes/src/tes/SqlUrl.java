@@ -11,6 +11,8 @@ import java.sql.Statement;
 import java.util.Properties;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 public class SqlUrl {
@@ -105,13 +107,11 @@ public class SqlUrl {
 			Statement stat = con.createStatement();
 			String qu = query;
 			ResultSet res = stat.executeQuery(qu);
-			while (res.next()) {
-				 sql = res.getString(columnIndex);
-				
+			while(res.next()) {
+				sql=res.getString(columnIndex);
 			}
-			 
 		}catch (SQLException | ClassNotFoundException eror) {
-			
+			JOptionPane.showMessageDialog(null, eror);
 		}
 		return sql;
 	}
@@ -125,9 +125,9 @@ public class SqlUrl {
 			ResultSet res = stat.executeQuery(query);
 			ResultSetMetaData resmd = res.getMetaData();
 			col=resmd.getColumnCount();
-			cn=new String[col-1];
+			cn=new String[col];
 			for (int i=0;i<col;i++) {
-			cn[i]=resmd.getColumnName(i+2);
+			cn[i]=resmd.getColumnName(i+1);
 			
 			}
 		} catch (ClassNotFoundException e) {

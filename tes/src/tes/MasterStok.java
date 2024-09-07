@@ -22,6 +22,7 @@ import java.sql.SQLException;
 
 import javax.swing.JScrollPane;
 import java.awt.SystemColor;
+import java.awt.Font;
 
 public class MasterStok extends JPanel {
 	private JTable table;
@@ -33,7 +34,6 @@ public class MasterStok extends JPanel {
 	private JTextField txtNama;
 	private JTextField txtJumlah;
 	private JTextField txtHarga;
-	private JTextField txtUser;
 
 	/**
 	 * Create the panel.
@@ -41,35 +41,26 @@ public class MasterStok extends JPanel {
 	public MasterStok(MainMenu m) {
 		this.m = m;
 		this.cls = m.btX();
-		
+		table = new JTable();
 		
 		
 		JLabel lblTambahStokBarang = new JLabel("STOK BARANG");
+		lblTambahStokBarang.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblTambahStokBarang.setBackground(SystemColor.textHighlight);
 		
-		JButton btnBaru = new JButton("Baru");
+		JButton btnBaru = new JButton("+");
 		
-		btnBaru.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String usx = Logon.getlg().getUser();
-				DefaultTableModel baru = (DefaultTableModel)table.getModel();
-				String query = "select * from `stok_barang`";
-				baru.setColumnCount(SqlUrl.sqlGetColumn(query).length);
-				baru.setColumnIdentifiers(SqlUrl.sqlGetColumn(query));
-				baru.setRowCount(1);
-			}
-		});
-		
-		JButton btnEdit = new JButton("Edit");
+		JButton btnEdit = new JButton("Hapus");
 		
 		JButton btnSimpan = new JButton("Simpan");
 		
 		JButton btnBatal = new JButton("Batal");
 		
 		JButton btnX = new JButton("x");
-		Logon ls = Logon.getlg();
 		
-		String message = ls.getUser();
+		
+		
+		
 		
 		btnX.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -81,6 +72,11 @@ public class MasterStok extends JPanel {
 				DefaultTableModel cnsl = (DefaultTableModel)table.getModel();
 				cnsl.setRowCount(0);
 				cnsl.setColumnCount(0);
+				
+				if (cnsl.getRowCount()<1) {
+					btnSimpan.setEnabled(false);
+					btnEdit.setEnabled(false);
+				}
 			}
 		});
 		btnSimpan.addActionListener(new ActionListener() {
@@ -107,7 +103,7 @@ public class MasterStok extends JPanel {
 						prep.setInt(5, harga);
 						prep.execute();
 					}
-					
+					inp.setRowCount(0);
 					
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -116,6 +112,8 @@ public class MasterStok extends JPanel {
 					JOptionPane.showMessageDialog(btnSimpan, e);
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} finally {
+					JOptionPane.showMessageDialog(btnSimpan, "Success");
 				}
 			}
 		});
@@ -125,15 +123,12 @@ public class MasterStok extends JPanel {
 		txtJenis.setColumns(10);
 		
 		txtNama = new JTextField();
-		txtNama.setText("Nama");
 		txtNama.setColumns(10);
 		
 		txtJumlah = new JTextField();
-		txtJumlah.setText("Jumlah");
 		txtJumlah.setColumns(10);
 		
 		txtHarga = new JTextField();
-		txtHarga.setText("Harga");
 		txtHarga.setColumns(10);
 		
 		JLabel lblJenisBarang = new JLabel("Jenis Barang");
@@ -144,11 +139,40 @@ public class MasterStok extends JPanel {
 		
 		JLabel lblHarga = new JLabel("Harga");
 		
-		txtUser = new JTextField();
-		txtUser.setText("User");
-		txtUser.setColumns(10);
 		
 		
+		
+		btnBaru.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String usl = Logon.getlg().getUser();
+				DefaultTableModel baru = (DefaultTableModel)table.getModel();
+				String query = "select `jenis_barang`,`nama_barang`, `nama_user`, `jumlah`,`harga` from `stok_barang`";
+				baru.setColumnIdentifiers(SqlUrl.sqlGetColumn(query));
+				String jenis,namabrg;
+				int jumlah,harga;
+				jenis=txtJenis.getText();
+				namabrg=txtNama.getText();
+				jumlah=Integer.parseInt(txtJumlah.getText());
+				harga=Integer.parseInt(txtHarga.getText());
+				Object[] dta = {jenis,namabrg,usl,jumlah,harga};
+				
+				baru.insertRow(0, dta);
+				txtHarga.setText(null);
+				txtJenis.setText(null);
+				txtJumlah.setText(null);
+				txtNama.setText(null);
+				
+				
+			}
+		});
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DefaultTableModel del= (DefaultTableModel)table.getModel();
+				int rdel = table.getSelectedRow();
+				del.removeRow(rdel);
+			}
+			
+		});
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
@@ -158,10 +182,7 @@ public class MasterStok extends JPanel {
 						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 							.addGap(21)
 							.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE))
-						.addGroup(groupLayout.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(lblTambahStokBarang, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE))
-						.addGroup(groupLayout.createSequentialGroup()
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 							.addContainerGap()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addComponent(btnBaru)
@@ -170,22 +191,22 @@ public class MasterStok extends JPanel {
 								.addComponent(lblKuantitas)
 								.addComponent(lblHarga))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(txtJenis, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addGap(83)
-									.addComponent(txtUser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(txtHarga)
+								.addComponent(txtJumlah)
+								.addComponent(txtNama)
+								.addComponent(txtJenis)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(btnEdit)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(btnSimpan)
-									.addPreferredGap(ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
-									.addComponent(btnBatal)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(btnX))
-								.addComponent(txtNama, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtJumlah, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtHarga, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+									.addComponent(btnSimpan)))
+							.addPreferredGap(ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+							.addComponent(btnBatal)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnX))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(lblTambahStokBarang, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -203,8 +224,7 @@ public class MasterStok extends JPanel {
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtJenis, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblJenisBarang)
-						.addComponent(txtUser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblJenisBarang))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtNama, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -218,12 +238,11 @@ public class MasterStok extends JPanel {
 						.addComponent(txtHarga, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblHarga))
 					.addGap(29)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		
-		table = new JTable();
-		table.setRowSelectionAllowed(false);
+		
 		scrollPane.setViewportView(table);
 		setLayout(groupLayout);
 

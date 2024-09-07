@@ -26,6 +26,7 @@ public class MainMenu extends JFrame {
 	private JButton btnX;
 	private JMenuItem mntmMasterBarang;                                                                                                                                                    
 	private String logs;
+	private JMenuItem mntmCekStok;
 
 	/**
 	 * Launch the application.
@@ -52,8 +53,6 @@ public class MainMenu extends JFrame {
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		Logon lgs = Logon.getlg();
-		JOptionPane.showMessageDialog(menuBar, lgs.getUser());
 		menuBar = new JMenuBar();
 		menuBar.setMargin(new Insets(2, 15, 2, 0));
 		setJMenuBar(menuBar);
@@ -127,6 +126,27 @@ public class MainMenu extends JFrame {
 			}
 		});
 		mnMaster.add(mntmMasterBarang);
+		
+		mntmCekStok = new JMenuItem("cek stok");
+		mntmCekStok.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CekStok ck = new CekStok(MainMenu.this);
+				GroupLayout groupLayout = new GroupLayout(getContentPane());
+		        groupLayout.setHorizontalGroup(
+		            groupLayout.createParallelGroup(Alignment.LEADING)
+		                .addComponent(ck, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+		        );
+		        groupLayout.setVerticalGroup(
+		            groupLayout.createParallelGroup(Alignment.LEADING)
+		                .addComponent(ck, GroupLayout.PREFERRED_SIZE, 241, Short.MAX_VALUE)
+		        );
+		        getContentPane().add(ck);
+		        getContentPane().setLayout(groupLayout);
+		        getContentPane().revalidate();
+		        getContentPane().repaint();
+			}
+		});
+		mnMaster.add(mntmCekStok);
 		
 		btnX = new JButton("x");
 		btnX.setVisible(false);
