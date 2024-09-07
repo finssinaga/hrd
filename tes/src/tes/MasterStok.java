@@ -15,6 +15,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.ActionListener;
+import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,6 +24,9 @@ import java.sql.SQLException;
 import javax.swing.JScrollPane;
 import java.awt.SystemColor;
 import java.awt.Font;
+import javax.swing.JFormattedTextField;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class MasterStok extends JPanel {
 	private JTable table;
@@ -83,7 +87,8 @@ public class MasterStok extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				DefaultTableModel inp = (DefaultTableModel)table.getModel();
 				String jenis_barang,nama_barang,nama_user;
-				int jumlah,harga;
+				int jumlah;
+				String harga;
 				try {
 					Class.forName(SqlUrl.Driver());
 					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
@@ -93,22 +98,23 @@ public class MasterStok extends JPanel {
 						nama_barang=inp.getValueAt(i, 1).toString();
 						nama_user=Logon.getlg().getUser().toString();
 						jumlah=Integer.parseInt(inp.getValueAt(i, 3).toString());
-						harga=Integer.parseInt(inp.getValueAt(i, 4).toString());
+						harga=new BigInteger(inp.getValueAt(i, 4).toString()).toString();
 						
 						PreparedStatement prep = con.prepareStatement(query);
 						prep.setString(1, jenis_barang);
 						prep.setString(2, nama_barang);
 						prep.setString(3, nama_user);
 						prep.setInt(4, jumlah);
-						prep.setInt(5, harga);
+						prep.setString(5, harga);
 						prep.execute();
+						Thread.sleep(1000);
 					}
 					inp.setRowCount(0);
 					
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (SQLException e) {
+				} catch (SQLException | InterruptedException e) {
 					JOptionPane.showMessageDialog(btnSimpan, e);
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -129,6 +135,15 @@ public class MasterStok extends JPanel {
 		txtJumlah.setColumns(10);
 		
 		txtHarga = new JTextField();
+		txtHarga.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent typ) {
+				if (txtHarga.getText().length()>18&&!(typ.getKeyChar()==KeyEvent.VK_DELETE||typ.getKeyChar()==KeyEvent.VK_BACK_SPACE)){
+			getToolkit().beep();
+			typ.consume();
+		}
+			}
+		});
 		txtHarga.setColumns(10);
 		
 		JLabel lblJenisBarang = new JLabel("Jenis Barang");
@@ -149,11 +164,12 @@ public class MasterStok extends JPanel {
 				String query = "select `jenis_barang`,`nama_barang`, `nama_user`, `jumlah`,`harga` from `stok_barang`";
 				baru.setColumnIdentifiers(SqlUrl.sqlGetColumn(query));
 				String jenis,namabrg;
-				int jumlah,harga;
+				long jumlah;
+				BigInteger harga;
 				jenis=txtJenis.getText();
 				namabrg=txtNama.getText();
 				jumlah=Integer.parseInt(txtJumlah.getText());
-				harga=Integer.parseInt(txtHarga.getText());
+				harga=new BigInteger(txtHarga.getText());
 				Object[] dta = {jenis,namabrg,usl,jumlah,harga};
 				
 				baru.insertRow(0, dta);
@@ -173,6 +189,7 @@ public class MasterStok extends JPanel {
 			}
 			
 		});
+		
 		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(

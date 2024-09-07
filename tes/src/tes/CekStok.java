@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.JobAttributes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -48,11 +49,13 @@ public class CekStok extends JPanel {
 			Class.forName(SqlUrl.Driver());
 			Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
 			Statement stat = con.createStatement();
-			String count = "select count(`jenis_barang`) as rocoun from `stok_barang`";
+			String count = "select count(`jenis_barang`) as rocoun from `stok_barang` group by `jenis_barang`";
 			ResultSet cown = stat.executeQuery(count);
-			cown.next();
-			int ro = cown.getInt("rocoun");
-			list = new String[ro];
+			int i =0 ;
+			while (cown.next()) {
+				i++;
+			}
+			list = new String[i];
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,12 +63,11 @@ public class CekStok extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		try {
 			Class.forName(SqlUrl.Driver());
 			Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
 			Statement stat = con.createStatement();
-			String quer = "select `jenis_barang` from `stok_barang`";
+			String quer = "select `jenis_barang` from `stok_barang` group by `jenis_barang`";
 			ResultSet res = stat.executeQuery(quer);
 			int ro=list.length;
 			for (int i=0;i<ro;i++) {
@@ -83,20 +85,31 @@ public class CekStok extends JPanel {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
-		
 		btnCari.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel ck = (DefaultTableModel)table.getModel();
 				ck.setRowCount(0);
 				String jen = comboBox.getSelectedItem().toString();
 				String query = "select * from `stok_barang` where `jenis_barang` = '"+jen+"'";
-				String namabrg = SqlUrl.sqlGet(query, 3).toString();
-				int jumlah = Integer.parseInt(SqlUrl.sqlGet(query, 5).toString());
+				String namabrg = null;
+				String jumlah = null;
 				String col = "select `nama_barang`,`jumlah` from `stok_barang`";
 				String[] nmcol = SqlUrl.sqlGetColumn(col);
 				ck.setColumnIdentifiers(nmcol);
-				Object[] data = {namabrg,jumlah};
-				ck.addRow(data);
+				try {
+					Class.forName(SqlUrl.Driver());
+					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
+					Statement stat = con.createStatement();
+					ResultSet res = stat.executeQuery(query);
+					while(res.next()) {
+						namabrg=res.getString(3);
+						jumlah = res.getString(5);
+						Object[] data = {namabrg,jumlah};
+						ck.addRow(data);
+					}
+				}catch (ClassNotFoundException | SQLException er) {
+					er.printStackTrace();
+				}
 			}
 		});
 		

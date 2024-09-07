@@ -108,8 +108,9 @@ public class SqlUrl {
 			String qu = query;
 			ResultSet res = stat.executeQuery(qu);
 			while(res.next()) {
-				sql=res.getString(columnIndex);
+				sql=res.getString(columnIndex)+",";
 			}
+			
 		}catch (SQLException | ClassNotFoundException eror) {
 			JOptionPane.showMessageDialog(null, eror);
 		}

@@ -60,6 +60,11 @@ public class AdminPanel extends JFrame {
         mnUserManage.add(mntmRemoveUser);
 
         JMenuItem mntmManageUserGroup = new JMenuItem("manage user group");
+        mntmManageUserGroup.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		
+        	}
+        });
         mnUserManage.add(mntmManageUserGroup);
 
         JMenu mnDatabase = new JMenu("database");
