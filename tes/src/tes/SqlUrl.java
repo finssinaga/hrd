@@ -1,6 +1,9 @@
 package tes;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,16 +16,53 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Vector;
-
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.TableModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.eclipse.birt.report.engine.api.EngineConfig;
+import org.eclipse.birt.report.engine.api.HTMLRenderOption;
+import org.eclipse.birt.report.engine.api.IReportEngine;
+import org.eclipse.birt.report.engine.api.IReportRunnable;
+import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
+import org.eclipse.birt.report.engine.api.ReportEngine;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class SqlUrl {
 	
-	
+	public static void runReport(String reportname) {
+		 try {
+	            // Initialize BIRT Engine
+	            EngineConfig config = new EngineConfig();
+	            IReportEngine engine = new ReportEngine(config);
+
+	            // Create a report task
+	            IReportRunnable reportRunnable = engine.openReportDesign(System.getProperty("user.dir")+confloader("server.reportdir")+reportname);
+	            IRunAndRenderTask task = engine.createRunAndRenderTask(reportRunnable);
+	            // Define render options
+	            HTMLRenderOption options = new HTMLRenderOption();
+	            options.setOutputFileName("output/report.html");
+	            options.setOutputFormat("html");
+	            task.setRenderOption(options);
+
+	            // Run the report
+	            task.run();
+	            task.close();
+	        } catch (Exception e) {
+	        	JOptionPane.showMessageDialog(null, e+reportname);
+	            e.printStackTrace();
+	        }
+	}
 	public static List<Map<String, Object>> tblConvert(TableModel model) {
 		List<Map<String, Object>> dataList = new ArrayList<>();
 		int columnCount = model.getColumnCount();
@@ -38,24 +78,38 @@ public class SqlUrl {
 		}
 		return dataList;
 	}
+	public static void Excel(JTable table, File file) {
+	        try {
+	        	TableModel md = table.getModel();
+	        	FileWriter o = new FileWriter(file);
+	           for (int i=0; i<md.getColumnCount();i++) {
+	        	   o.write(md.getColumnName(i)+",");
+	           }
+	           o.write("\n");
+	           for (int s=0;s<md.getRowCount();s++) {
+	        	   for(int i=0;i<md.getColumnCount();i++) {
+	        		   o.write(md.getValueAt(s, i).toString()+",");
+	        	   }
+	        	   o.write("\n");
+	           }
+	          
+	           o.close();
+	        } catch (Exception ex) {
+	        	JOptionPane.showMessageDialog(null, ex);
+	            ex.printStackTrace();
+	        }}
+	
 	public static String Driver() {
 		String driver = "com.mysql.cj.jdbc.Driver";
 		return driver;
 	}
 	public static String confdir() {
-		String config = System.getProperty("user.dir")+"/bin/hrd.config";
+		String config = System.getProperty("user.dir")+"/config/hrd.config";
 		return config;
 	}
 	public static String url(){
 		String url;
-		Properties urls = new Properties();
-			try (FileInputStream load = new FileInputStream(confdir())){
-				urls.load(load);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			url = "jdbc:mysql://"+urls.getProperty("server.url")+":"+urls.getProperty("server.port")+"/"+urls.getProperty("server.database");
+			url = "jdbc:mysql://"+confloader("server.url")+":"+confloader("server.port")+"/"+confloader("server.database");
 			
 		return url;
 	}
@@ -76,27 +130,25 @@ public class SqlUrl {
 	}
 	public static String user() {
 		String url;
-		Properties urls = new Properties();
-			try (FileInputStream load = new FileInputStream(confdir())){
-				urls.load(load);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			url = urls.getProperty("server.user");
+			url = confloader("server.user");
 			return url;
 	}
 	public static String pass() {
 		String url;
-		Properties urls = new Properties();
+			url=confloader("server.password");
+			return url;
+	}
+	public static String confloader(String confname) {
+		String conf;
+		Properties confs = new Properties();
 			try (FileInputStream load = new FileInputStream(confdir())){
-				urls.load(load);
+				confs.load(load);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			url=urls.getProperty("server.password");
-			return url;
+			conf = confs.getProperty(confname);
+			return conf;
 	}
 	public static String usrlogin() {
 		//database user login information
@@ -122,7 +174,7 @@ public class SqlUrl {
 		return che;
 	}
 	public static Object sqlGet(String query, int columnIndex) {
-		String sql = null;
+		Object sql = null;
 		try {
 			Class.forName(Driver());
 			Connection con = DriverManager.getConnection(url(),user(),pass());
@@ -130,7 +182,7 @@ public class SqlUrl {
 			String qu = query;
 			ResultSet res = stat.executeQuery(qu);
 			while(res.next()) {
-				sql=res.getString(columnIndex);
+				sql=res.getObject(columnIndex);
 			}
 			
 		}catch (SQLException | ClassNotFoundException eror) {
@@ -162,5 +214,33 @@ public class SqlUrl {
 		}
 		return cn;
 	}
+	public static void importToXML(JTable tabla, File file) throws FileNotFoundException {
+        try {
+            DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
+            Document document = documentBuilder.newDocument();
+
+            Element root = document.createElement("Table");
+            document.appendChild(root);
+            for (int ro=0;ro<tabla.getRowCount();ro++) {
+            	Element row =document.createElement("row");
+            	root.appendChild(row);
+            for (int c = 0;c<tabla.getColumnCount();c++) {
+            	Element column = document.createElement(tabla.getColumnName(c));
+            	row.appendChild(column);
+            	column.appendChild(document.createTextNode(tabla.getValueAt(ro, c).toString()));
+            }}
+           
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource domSource = new DOMSource(document);
+
+            StreamResult streamResult = new StreamResult(file);
+            transformer.transform(domSource, streamResult);
+        } catch (ParserConfigurationException | TransformerException pce) {
+            JOptionPane.showMessageDialog(null, "Error: " + pce.toString());
+        }
+    }
 	
 }

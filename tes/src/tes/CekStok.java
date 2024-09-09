@@ -7,42 +7,26 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import org.eclipse.birt.report.engine.api.EngineConfig;
-import org.eclipse.birt.report.engine.api.HTMLRenderOption;
-import org.eclipse.birt.report.engine.api.IReportEngine;
-import org.eclipse.birt.report.engine.api.IReportRunnable;
-import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
-import org.eclipse.birt.report.engine.api.ReportEngine;
-import org.eclipse.datatools.connectivity.oda.design.CustomData;
-
+import java.awt.Desktop;
 import java.awt.Font;
-import java.awt.JobAttributes;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.print.PrinterException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
-import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.swing.JRViewer;
-
-import javax.swing.JToggleButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
+import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
@@ -146,32 +130,31 @@ public class CekStok extends JPanel {
 		JButton btnPrint = new JButton("print");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				 try {
-			            // Initialize BIRT Engine
-			            EngineConfig config = new EngineConfig();
-			            IReportEngine engine = new ReportEngine(config);
-
-			            // Create a report task
-			            IReportRunnable reportRunnable = engine.openReportDesign(System.getProperty("user.dir")+"\\src\\report\\report.rptdesign");
-			            IRunAndRenderTask task = engine.createRunAndRenderTask(reportRunnable);
-
-			            // Set parameter values
-			            TableModel model = table.getModel();
-			            CustomDataSource dataSrc = new CustomDataSource(SqlUrl.tblConvert(table.getModel()));
-			            task.setParameterValue("datasource",dataSrc);
-
-			            // Define render options
-			            HTMLRenderOption options = new HTMLRenderOption();
-			            options.setOutputFileName("output/report.html");
-			            options.setOutputFormat("html");
-			            task.setRenderOption(options);
-
-			            // Run the report
-			            task.run();
-			            task.close();
-			        } catch (Exception e) {
-			            e.printStackTrace();
-			        }
+				
+				File file = new File(System.getProperty("user.dir")+SqlUrl.confloader("server.outputdir")+"pp.xml");
+				try {
+					SqlUrl.importToXML(table, file);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, e);
+				}
+				SqlUrl.runReport("tesr.rptdesign");
+				String uri = "file:///I:/repository/tes/output/report.html";
+				try {
+					Desktop.getDesktop().browse(new URL(uri).toURI());
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				JOptionPane.showMessageDialog(null, "");
+				
 			}
 				
 			});
@@ -194,7 +177,7 @@ public class CekStok extends JPanel {
 							.addComponent(btnCari)))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnPrint)
-					.addPreferredGap(ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
 					.addComponent(btnX)
 					.addContainerGap())
 		);

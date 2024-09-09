@@ -29,6 +29,7 @@ public class MainMenu extends JFrame {
 	private JMenuItem mntmCekStok;
 	private JMenu mnLaporan;
 	private JMenuItem mntmLaporanStokBarang;
+	private JMenuItem mntmLaporanHistoryPerbaikan;
 
 	/**
 	 * Launch the application.
@@ -173,6 +174,9 @@ public class MainMenu extends JFrame {
 		});
 		mnLaporan.add(mntmLaporanStokBarang);
 		
+		mntmLaporanHistoryPerbaikan = new JMenuItem("Laporan History Perbaikan");
+		mnLaporan.add(mntmLaporanHistoryPerbaikan);
+		
 		btnX = new JButton("x");
 		btnX.setVisible(false);
 		btnX.addActionListener(new ActionListener() {
@@ -216,6 +220,24 @@ public class MainMenu extends JFrame {
 				dlt.deleteOnExit();
 			}
 		
+			mntmLaporanHistoryPerbaikan.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					LapHistory lp = new LapHistory();
+					GroupLayout groupLayout = new GroupLayout(getContentPane());
+			        groupLayout.setHorizontalGroup(
+			            groupLayout.createParallelGroup(Alignment.LEADING)
+			                .addComponent(lp, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+			        );
+			        groupLayout.setVerticalGroup(
+			            groupLayout.createParallelGroup(Alignment.LEADING)
+			                .addComponent(lp, GroupLayout.PREFERRED_SIZE, 241, Short.MAX_VALUE)
+			        );
+					getContentPane().add(lp);
+					getContentPane().setLayout(groupLayout);
+					getContentPane().validate();
+					getContentPane().repaint();
+				}
+			});
 	
 	}
 	public JMenuItem InputDat() {
