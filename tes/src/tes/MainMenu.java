@@ -27,6 +27,8 @@ public class MainMenu extends JFrame {
 	private JMenuItem mntmMasterBarang;                                                                                                                                                    
 	private String logs;
 	private JMenuItem mntmCekStok;
+	private JMenu mnLaporan;
+	private JMenuItem mntmLaporanStokBarang;
 
 	/**
 	 * Launch the application.
@@ -147,6 +149,29 @@ public class MainMenu extends JFrame {
 			}
 		});
 		mnMaster.add(mntmCekStok);
+		
+		mnLaporan = new JMenu("laporan");
+		menuBar.add(mnLaporan);
+		mntmLaporanStokBarang = new JMenuItem("laporan stok barang");
+		mntmLaporanStokBarang.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				PrintPrev pt = new PrintPrev();
+				GroupLayout groupLayout = new GroupLayout(getContentPane());
+		        groupLayout.setHorizontalGroup(
+		            groupLayout.createParallelGroup(Alignment.LEADING)
+		                .addComponent(pt, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+		        );
+		        groupLayout.setVerticalGroup(
+		            groupLayout.createParallelGroup(Alignment.LEADING)
+		                .addComponent(pt, GroupLayout.PREFERRED_SIZE, 241, Short.MAX_VALUE)
+		        );
+				getContentPane().add(pt);
+				getContentPane().setLayout(groupLayout);
+				getContentPane().validate();
+				getContentPane().repaint();
+			}
+		});
+		mnLaporan.add(mntmLaporanStokBarang);
 		
 		btnX = new JButton("x");
 		btnX.setVisible(false);

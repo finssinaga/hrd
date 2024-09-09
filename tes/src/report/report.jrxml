@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+                                  http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="report"
+              pageWidth="595"
+              pageHeight="842"
+              columnWidth="555"
+              leftMargin="20"
+              rightMargin="20"
+              topMargin="20"
+              bottomMargin="20"
+              uuid="389be72e-bb6d-4db3-8a54-df608ccc0bf9">
+
+    <parameter name="testString" class="java.lang.String"/>
+
+    <queryString>
+        <![CDATA[]]>
+    </queryString>
+
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+
+    <title>
+        <band height="81" splitType="Stretch">
+            <staticText>
+                <reportElement x="80" y="0" width="465" height="57" uuid="be3bf041-1009-4f8a-b529-72d592cc04df"/>
+                <textElement>
+                    <font fontName="Arial" size="25"/>
+                </textElement>
+                <text><![CDATA[PT . PANCA BERSOEDARAAN SEDJATI]]></text>
+            </staticText>
+            <image>
+                <reportElement x="20" y="3" width="50" height="50" uuid="d05ec7e4-4b69-4d7b-ae0e-201d5fc3536d"/>
+                <imageExpression><![CDATA["/src/icon/doc_ico.png"]]></imageExpression>
+            </image>
+        </band>
+    </title>
+
+    <pageHeader>
+        <band height="45" splitType="Stretch">
+            <textField pattern="MMMMM dd, yyyy">
+                <reportElement x="440" y="10" width="120" height="20" uuid="3c63e968-1ba5-4ab0-91fe-4835b3586541"/>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="0" y="9" width="171" height="21" uuid="6f6f4948-b865-446a-b4b5-403027ae8d78"/>
+                <textFieldExpression><![CDATA[$P{testString}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageHeader>
+
+    <columnHeader>
+        <band height="61" splitType="Stretch"/>
+    </columnHeader>
+
+    <detail>
+        <band height="125" splitType="Stretch"/>
+    </detail>
+
+    <columnFooter>
+        <band height="45" splitType="Stretch"/>
+    </columnFooter>
+
+    <pageFooter>
+        <band height="54" splitType="Stretch"/>
+    </pageFooter>
+
+    <summary>
+        <band height="42" splitType="Stretch"/>
+    </summary>
+</jasperReport>

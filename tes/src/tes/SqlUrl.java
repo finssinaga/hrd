@@ -8,14 +8,36 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
 
 import org.apache.commons.lang3.ArrayUtils;
 
 public class SqlUrl {
+	
+	
+	public static List<Map<String, Object>> tblConvert(TableModel model) {
+		List<Map<String, Object>> dataList = new ArrayList<>();
+		int columnCount = model.getColumnCount();
+		int rowCount = model.getRowCount();
+		for (int row=0;row<rowCount;row++){
+			Map<String,Object> rowdata = new HashMap<>();
+			for(int col = 0; col<columnCount;col++) {
+				String columnName = model.getColumnName(col);
+				Object cellData = model.getValueAt(row, col);
+				rowdata.put(columnName, cellData);
+			}
+			dataList.add(rowdata);
+		}
+		return dataList;
+	}
 	public static String Driver() {
 		String driver = "com.mysql.cj.jdbc.Driver";
 		return driver;
@@ -108,7 +130,7 @@ public class SqlUrl {
 			String qu = query;
 			ResultSet res = stat.executeQuery(qu);
 			while(res.next()) {
-				sql=res.getString(columnIndex)+",";
+				sql=res.getString(columnIndex);
 			}
 			
 		}catch (SQLException | ClassNotFoundException eror) {
