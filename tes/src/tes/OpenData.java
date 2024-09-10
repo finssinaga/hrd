@@ -11,6 +11,7 @@ import java.sql.Statement;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -114,6 +115,19 @@ public class OpenData extends JPanel {
 				cls.doClick();
 			}
 		});
+		
+		JButton btnNewButton = new JButton("New button");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Object[] tp = SqlUrl.sqlGet("select `jeniskend` from hrds", 1);
+				int i=0;
+				
+				Object ss = tp[0]+""+tp[1]+tp[2];
+				JOptionPane.showMessageDialog(null, ss);
+				
+				
+			}
+		});
 		GroupLayout gl_panel = new GroupLayout(this);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
@@ -125,7 +139,9 @@ public class OpenData extends JPanel {
 							.addComponent(loadSQL)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(btnPrint)
-							.addPreferredGap(ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+							.addComponent(btnNewButton)
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnCancel)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnX)))
@@ -139,7 +155,8 @@ public class OpenData extends JPanel {
 						.addComponent(loadSQL)
 						.addComponent(btnCancel)
 						.addComponent(btnPrint)
-						.addComponent(btnX))
+						.addComponent(btnX)
+						.addComponent(btnNewButton))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
 					.addGap(36))

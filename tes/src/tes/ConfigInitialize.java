@@ -80,7 +80,7 @@ public class ConfigInitialize extends JPanel {
 		userdir.setText(System.getProperty("user.dir"));
 		btnApplySetting.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent r) {
-				Files.de
+				
 				File conf = new File(System.getProperty("user.dir")+"/config/hrd.config");
 				conf.delete();
 				try {

@@ -18,6 +18,11 @@ import java.awt.Insets;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import java.awt.Dimension;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Toolkit;
 
 public class MainMenu extends JFrame {
 	
@@ -30,6 +35,13 @@ public class MainMenu extends JFrame {
 	private JMenu mnLaporan;
 	private JMenuItem mntmLaporanStokBarang;
 	private JMenuItem mntmLaporanHistoryPerbaikan;
+	private JMenuItem mntmMasterKendaraan;
+	private JMenuItem menuItem;
+	private JMenuItem mntmInputMaster;
+	private JMenu mnPerbaikan;
+	private JMenuItem mntmInputPerbaikan;
+	private JMenuItem mntmMasterSparepart;
+	private JMenuItem mntmTest;
 
 	/**
 	 * Launch the application.
@@ -52,80 +64,67 @@ public class MainMenu extends JFrame {
 	 * @throws Exception 
 	 */
 	public MainMenu() {
+		setTitle("Program");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MainMenu.class.getResource("/icon/doc_ico.png")));
 		setVisible(true);
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		menuBar = new JMenuBar();
+		menuBar.setPreferredSize(new Dimension(0, 30));
 		menuBar.setMargin(new Insets(2, 15, 2, 0));
 		setJMenuBar(menuBar);
+		this.logs = Logon.getlg().getUser();
 		
-		JMenu mnMaster = new JMenu("master");
+		JMenu mnMaster = new JMenu("Master");
+		mnMaster.setFont(new Font("Arial", Font.BOLD, 14));
 		menuBar.add(mnMaster);
-		JMenuItem mntmTable = new JMenuItem("table");
-		mntmTable.addActionListener(new ActionListener() {
+		JMenuItem mntmMasterKendaraan = new JMenuItem("Buka Master Kendaraan");
+		mntmMasterKendaraan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				OpenData opds = new OpenData(MainMenu.this);
-				GroupLayout groupLayout = new GroupLayout(getContentPane());
-		        groupLayout.setHorizontalGroup(
-		            groupLayout.createParallelGroup(Alignment.LEADING)
-		                .addComponent(opds, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
-		        );
-		        groupLayout.setVerticalGroup(
-		            groupLayout.createParallelGroup(Alignment.LEADING)
-		                .addComponent(opds, GroupLayout.PREFERRED_SIZE, 241, Short.MAX_VALUE)
-		        );
-		        getContentPane().add(opds);
-		        getContentPane().setLayout(groupLayout);
-		        getContentPane().revalidate();
-		        getContentPane().repaint();
-		        
+				JPanel mstr = new MasterKendaraan(MainMenu.this);
+				conpanel(mstr);
 			}
 			});
 		
+		mntmInputMaster = new JMenuItem("Input Master Kendaraan");
+		mntmInputMaster.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JPanel ipt = new InputMasterKendaraan(MainMenu.this);
+				conpanel(ipt);
+			}
+		});
+		mnMaster.add(mntmInputMaster);
 		
-		mnMaster.add(mntmTable);
+		
+		mnMaster.add(mntmMasterKendaraan);
 		
 		mntmInputData = new JMenuItem("input data");
 		mntmInputData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JPanel ipd = new InputData(MainMenu.this);
-				
-				GroupLayout groupLayout = new GroupLayout(getContentPane());
-		        groupLayout.setHorizontalGroup(
-		            groupLayout.createParallelGroup(Alignment.LEADING)
-		                .addComponent(ipd, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
-		        );
-		        groupLayout.setVerticalGroup(
-		            groupLayout.createParallelGroup(Alignment.LEADING)
-		                .addComponent(ipd, GroupLayout.PREFERRED_SIZE, 241, Short.MAX_VALUE)
-		        );
-		        getContentPane().add(ipd);
-		        getContentPane().setLayout(groupLayout);
-		        getContentPane().revalidate();
-		        getContentPane().repaint();
+				conpanel(ipd);
 			}
 		});
+		
+		menuItem = new JMenuItem("---------------------");
+		mnMaster.add(menuItem);
+		
+		mntmMasterSparepart = new JMenuItem("Master SparePart");
+		mntmMasterSparepart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JPanel p = new MasterPart();
+				conpanel(p);
+			}
+		});
+		mnMaster.add(mntmMasterSparepart);
 		mnMaster.add(mntmInputData);
-		this.logs = Logon.getlg().getUser();
 		mntmMasterBarang = new JMenuItem("master barang");
 		mntmMasterBarang.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				MasterStok mstr = new MasterStok(MainMenu.this);
-				GroupLayout groupLayout = new GroupLayout(getContentPane());
-		        groupLayout.setHorizontalGroup(
-		            groupLayout.createParallelGroup(Alignment.LEADING)
-		                .addComponent(mstr, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
-		        );
-		        groupLayout.setVerticalGroup(
-		            groupLayout.createParallelGroup(Alignment.LEADING)
-		                .addComponent(mstr, GroupLayout.PREFERRED_SIZE, 241, Short.MAX_VALUE)
-		        );
-		        getContentPane().add(mstr);
-		        getContentPane().setLayout(groupLayout);
-		        getContentPane().revalidate();
-		        getContentPane().repaint();
+				conpanel(mstr);
 			}
 		});
 		mnMaster.add(mntmMasterBarang);
@@ -134,42 +133,35 @@ public class MainMenu extends JFrame {
 		mntmCekStok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				CekStok ck = new CekStok(MainMenu.this);
-				GroupLayout groupLayout = new GroupLayout(getContentPane());
-		        groupLayout.setHorizontalGroup(
-		            groupLayout.createParallelGroup(Alignment.LEADING)
-		                .addComponent(ck, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
-		        );
-		        groupLayout.setVerticalGroup(
-		            groupLayout.createParallelGroup(Alignment.LEADING)
-		                .addComponent(ck, GroupLayout.PREFERRED_SIZE, 241, Short.MAX_VALUE)
-		        );
-		        getContentPane().add(ck);
-		        getContentPane().setLayout(groupLayout);
-		        getContentPane().revalidate();
-		        getContentPane().repaint();
+				conpanel(ck);
 			}
 		});
 		mnMaster.add(mntmCekStok);
 		
-		mnLaporan = new JMenu("laporan");
+		mntmTest = new JMenuItem("test");
+		mntmTest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JPanel pp = new OpenData(MainMenu.this);
+				conpanel(pp);
+			}
+		});
+		mnMaster.add(mntmTest);
+		
+		mnPerbaikan = new JMenu("Perbaikan");
+		mnPerbaikan.setFont(new Font("Arial", Font.BOLD, 14));
+		menuBar.add(mnPerbaikan);
+		
+		mntmInputPerbaikan = new JMenuItem("Perbaikan Part");
+		mnPerbaikan.add(mntmInputPerbaikan);
+		
+		mnLaporan = new JMenu("Laporan");
+		mnLaporan.setFont(new Font("Arial", Font.BOLD, 14));
 		menuBar.add(mnLaporan);
 		mntmLaporanStokBarang = new JMenuItem("laporan stok barang");
 		mntmLaporanStokBarang.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				PrintPrev pt = new PrintPrev();
-				GroupLayout groupLayout = new GroupLayout(getContentPane());
-		        groupLayout.setHorizontalGroup(
-		            groupLayout.createParallelGroup(Alignment.LEADING)
-		                .addComponent(pt, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
-		        );
-		        groupLayout.setVerticalGroup(
-		            groupLayout.createParallelGroup(Alignment.LEADING)
-		                .addComponent(pt, GroupLayout.PREFERRED_SIZE, 241, Short.MAX_VALUE)
-		        );
-				getContentPane().add(pt);
-				getContentPane().setLayout(groupLayout);
-				getContentPane().validate();
-				getContentPane().repaint();
+				conpanel(pt);
 			}
 		});
 		mnLaporan.add(mntmLaporanStokBarang);
@@ -202,40 +194,11 @@ public class MainMenu extends JFrame {
 		);
 		getContentPane().setLayout(groupLayout);
 		
-			File chk = new File(SqlUrl.dir());
-			String[] cnk = chk.list();
-			String nm = "administrator";
-			boolean ada = SqlUrl.admin(cnk, nm);
-			if (ada == true) {
-				mntmTable.setVisible(false);
-			}
 			
-			for (int i=0;i<SqlUrl.level().length;i++) {
-				StringBuilder resl = new StringBuilder();
-				String[] del = new String[SqlUrl.level().length];
-				resl.append(del[i]=SqlUrl.level()[i]);
-				
-				File dlt = new File(SqlUrl.dir(),resl.toString());
-				System.out.println(dlt);
-				dlt.deleteOnExit();
-			}
-		
 			mntmLaporanHistoryPerbaikan.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					LapHistory lp = new LapHistory(MainMenu.this);
-					GroupLayout groupLayout = new GroupLayout(getContentPane());
-			        groupLayout.setHorizontalGroup(
-			            groupLayout.createParallelGroup(Alignment.LEADING)
-			                .addComponent(lp, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
-			        );
-			        groupLayout.setVerticalGroup(
-			            groupLayout.createParallelGroup(Alignment.LEADING)
-			                .addComponent(lp, GroupLayout.PREFERRED_SIZE, 241, Short.MAX_VALUE)
-			        );
-					getContentPane().add(lp);
-					getContentPane().setLayout(groupLayout);
-					getContentPane().validate();
-					getContentPane().repaint();
+					conpanel(lp);
 				}
 			});
 	
@@ -249,9 +212,45 @@ public class MainMenu extends JFrame {
 	public JButton btX() {
 		return btnX;
 	}
+	public void conpanel(JPanel panel) {
+		cls();
+		GroupLayout groupLayout = new GroupLayout(getContentPane());
+        groupLayout.setHorizontalGroup(
+            groupLayout.createParallelGroup(Alignment.LEADING)
+                .addComponent(panel, GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
+        );
+        groupLayout.setVerticalGroup(
+            groupLayout.createParallelGroup(Alignment.LEADING)
+                .addComponent(panel, GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
+        );
+        getContentPane().add(panel);
+        getContentPane().setLayout(groupLayout);
+        getContentPane().validate();
+        getContentPane().repaint();
+	}
 	public void cls() {
 		getContentPane().removeAll();
 		getContentPane().repaint();
+	}
+	public void permission() {
+		File chk = new File(SqlUrl.dir());
+		String[] cnk = chk.list();
+		String nm = "administrator";
+		boolean ada = SqlUrl.admin(cnk, nm);
+		if (ada == true) {
+			mntmMasterKendaraan.setVisible(false);
+		}
+		
+		for (int i=0;i<SqlUrl.level().length;i++) {
+			StringBuilder resl = new StringBuilder();
+			String[] del = new String[SqlUrl.level().length];
+			resl.append(del[i]=SqlUrl.level()[i]);
+			
+			File dlt = new File(SqlUrl.dir(),resl.toString());
+			System.out.println(dlt);
+			dlt.deleteOnExit();
+		}
+	
 	}
 }
 
