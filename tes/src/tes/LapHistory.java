@@ -5,6 +5,9 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import com.github.lgooddatepicker.components.DatePicker;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Desktop;
 import java.awt.Font;
 import java.time.format.DateTimeFormatter;
 
@@ -20,6 +23,9 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -38,11 +44,15 @@ public class LapHistory extends JPanel {
 	 */
 	private final DatePickerSettings datePickerSettings_1 = new DatePickerSettings();
 	private JTable table;
+	private MainMenu mn;
+	private JButton xt;
 
 	/**
 	 * Create the panel.
 	 */
-	public LapHistory() {
+	public LapHistory(MainMenu mn) {
+		this.mn=mn;
+		this.xt=mn.btX();
 		datePickerSettings.setLocale(new Locale("in", "ID"));
 		datePickerSettings.setFormatForDatesCommonEra(DateTimeFormatter.ofPattern("uuuu-MM-dd"));
 		datePickerSettings.setVisibleNextMonthButton(false);
@@ -68,6 +78,34 @@ public class LapHistory extends JPanel {
 		
 		
 		JScrollPane scrollPane = new JScrollPane();
+		
+		JButton btnX = new JButton("x");
+		btnX.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				mn.btX().doClick();
+			}
+		});
+		
+		JButton btnPrint = new JButton("print");
+		btnPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {
+					SqlUrl.importToXML(table, "History");
+				} catch (FileNotFoundException e) {
+					JOptionPane.showMessageDialog(null, e);
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				SqlUrl.runReport("HistoryReport");
+				try {
+					Desktop.getDesktop().open(new File(SqlUrl.confloader("server.outputdir")));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -87,11 +125,15 @@ public class LapHistory extends JPanel {
 								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(datePicker_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(btnOk))))
+									.addComponent(btnOk)
+									.addPreferredGap(ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+									.addComponent(btnPrint)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(btnX))))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addContainerGap()
 							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 382, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap(58, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -106,7 +148,9 @@ public class LapHistory extends JPanel {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(datePicker, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(datePicker_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnOk))
+						.addComponent(btnOk)
+						.addComponent(btnX)
+						.addComponent(btnPrint))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 157, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(35, Short.MAX_VALUE))
@@ -130,10 +174,11 @@ public class LapHistory extends JPanel {
 					Statement stat = con.createStatement();
 					ResultSet res = stat.executeQuery(que);
 					ResultSetMetaData rsmd = res.getMetaData();
-					int co=rsmd.getColumnCount();
+					int co=rsmd.getColumnCount()-1;
+					JOptionPane.showMessageDialog(null, co);
 					col = new String[co];
-					for(int i=1;i<co;i++) {
-						col[i]=rsmd.getColumnName(i);
+					for(int i=0;i<co;i++) {
+						col[i]=rsmd.getColumnName(i+2);
 					}
 					tg.setColumnIdentifiers(col);
 					while(res.next()) {
@@ -141,9 +186,20 @@ public class LapHistory extends JPanel {
 					}
 					Class.forName(SqlUrl.Driver());
 					Connection cons = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
-					Statement stats = con.createStatement();
-					ResultSet ress = stat.executeQuery(query);
-					for(int i=1;i<ress.)
+					Statement stats = cons.createStatement();
+					ResultSet ress = stats.executeQuery(query);
+					Object tanggal = null,jenis = null,nama = null,user = null,jumlah = null,harga = null;
+					while(ress.next()) {
+						tanggal=ress.getObject(2);
+						jenis=ress.getObject(3);
+						nama=ress.getObject(4);
+						user=ress.getObject(5);
+						jumlah=ress.getObject(6);
+						harga=ress.getObject(7);
+						
+					}
+					Object[] rdt= {tanggal,jenis,nama,user,jumlah,harga};
+					tg.addRow(rdt);
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

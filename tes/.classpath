@@ -20,5 +20,6 @@
 	<classpathentry kind="lib" path="jasperreports-6.21.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/birt"/>
 	<classpathentry kind="lib" path="jxl.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/brt"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

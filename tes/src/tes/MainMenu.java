@@ -222,7 +222,7 @@ public class MainMenu extends JFrame {
 		
 			mntmLaporanHistoryPerbaikan.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					LapHistory lp = new LapHistory();
+					LapHistory lp = new LapHistory(MainMenu.this);
 					GroupLayout groupLayout = new GroupLayout(getContentPane());
 			        groupLayout.setHorizontalGroup(
 			            groupLayout.createParallelGroup(Alignment.LEADING)

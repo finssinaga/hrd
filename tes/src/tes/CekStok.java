@@ -14,10 +14,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -25,8 +21,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
+
+import org.eclipse.birt.report.engine.api.EngineConfig;
+import org.eclipse.birt.report.engine.api.EngineException;
+import org.eclipse.birt.report.engine.api.IReportEngine;
+import org.eclipse.birt.report.engine.api.IReportRunnable;
+import org.eclipse.birt.report.engine.api.IRunAndRenderTask;
+import org.eclipse.birt.report.engine.api.ReportEngine;
+
 import javax.swing.JComboBox;
-import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
@@ -131,29 +134,23 @@ public class CekStok extends JPanel {
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				File file = new File(System.getProperty("user.dir")+SqlUrl.confloader("server.outputdir")+"pp.xml");
+				
 				try {
-					SqlUrl.importToXML(table, file);
+					SqlUrl.importToXML(table, "pp");
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					JOptionPane.showMessageDialog(null, e);
 				}
-				SqlUrl.runReport("tesr.rptdesign");
-				String uri = "file:///I:/repository/tes/output/report.html";
+				SqlUrl.runReport("tesr");
 				try {
-					Desktop.getDesktop().browse(new URL(uri).toURI());
-				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					Desktop.getDesktop().open(new File(System.getProperty("user.dir")+SqlUrl.confloader("server.outputdir")+"Report.html"));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
-				JOptionPane.showMessageDialog(null, "");
+				
+				//JOptionPane.showMessageDialog(null, SqlUrl.url());
 				
 			}
 				

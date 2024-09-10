@@ -2,28 +2,46 @@
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
     <property name="createdBy">Eclipse BIRT Designer Version 4.7.0.v201706222054</property>
     <property name="units">in</property>
-    <property name="iconFile">/templates/first_report.gif</property>
-    <property name="cheatSheet">org.eclipse.birt.report.designer.ui.cheatsheet.firstreport</property>
-    <property name="layoutPreference">fixed layout</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
     <property name="imageDPI">96</property>
     <data-sources>
-        <oda-data-source extensionID="org.eclipse.datatools.enablement.oda.xml" name="Data Source" id="256">
-            <property name="FILELIST">output/pp.xml</property>
+        <oda-data-source extensionID="org.eclipse.datatools.enablement.oda.xml" name="Data Source" id="4">
+            <property name="FILELIST">output/History.xml</property>
         </oda-data-source>
     </data-sources>
     <data-sets>
-        <oda-data-set extensionID="org.eclipse.datatools.enablement.oda.xml.dataSet" name="Data Set" id="266">
+        <oda-data-set extensionID="org.eclipse.datatools.enablement.oda.xml.dataSet" name="Data Set" id="5">
             <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">tanggal</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">tanggal</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">jenis_barang</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">jenis_barang</text-property>
+                </structure>
                 <structure>
                     <property name="columnName">nama_barang</property>
                     <property name="analysis">dimension</property>
                     <text-property name="heading">nama_barang</text-property>
                 </structure>
                 <structure>
+                    <property name="columnName">nama_user</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">nama_user</text-property>
+                </structure>
+                <structure>
                     <property name="columnName">jumlah</property>
                     <property name="analysis">dimension</property>
                     <text-property name="heading">jumlah</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">harga</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="heading">harga</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters"/>
@@ -31,12 +49,32 @@
                 <list-property name="resultSet">
                     <structure>
                         <property name="position">1</property>
-                        <property name="name">nama_barang</property>
+                        <property name="name">tanggal</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">2</property>
+                        <property name="name">jenis_barang</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">nama_barang</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">nama_user</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
                         <property name="name">jumlah</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">harga</property>
                         <property name="dataType">string</property>
                     </structure>
                 </list-property>
@@ -45,20 +83,48 @@
             <list-property name="resultSet">
                 <structure>
                     <property name="position">1</property>
+                    <property name="name">tanggal</property>
+                    <property name="nativeName">tanggal</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">jenis_barang</property>
+                    <property name="nativeName">jenis_barang</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
                     <property name="name">nama_barang</property>
                     <property name="nativeName">nama_barang</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">2</property>
+                    <property name="position">4</property>
+                    <property name="name">nama_user</property>
+                    <property name="nativeName">nama_user</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
                     <property name="name">jumlah</property>
                     <property name="nativeName">jumlah</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">harga</property>
+                    <property name="nativeName">harga</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[table0#-TNAME-#table0#:#[/Table/row]#:#{nama_barang;STRING;/nama_barang},{jumlah;STRING;/jumlah}]]></xml-property>
+            <xml-property name="queryText"><![CDATA[table0#-TNAME-#table0#:#[/Table/row]#:#{tanggal;STRING;/tanggal},{jenis_barang;STRING;/jenis_barang},{nama_barang;STRING;/nama_barang},{nama_user;STRING;/nama_user},{jumlah;STRING;/jumlah},{harga;STRING;/harga}]]></xml-property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>2.0</Version>
@@ -68,7 +134,7 @@
         <design:resultColumnDefinitions>
           <design:attributes>
             <design:identifier>
-              <design:name>nama_barang</design:name>
+              <design:name>tanggal</design:name>
               <design:position>1</design:position>
             </design:identifier>
             <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
@@ -77,14 +143,14 @@
             <design:nullability>Unknown</design:nullability>
           </design:attributes>
           <design:usageHints>
-            <design:label>nama_barang</design:label>
+            <design:label>tanggal</design:label>
             <design:formattingHints/>
           </design:usageHints>
         </design:resultColumnDefinitions>
         <design:resultColumnDefinitions>
           <design:attributes>
             <design:identifier>
-              <design:name>jumlah</design:name>
+              <design:name>jenis_barang</design:name>
               <design:position>2</design:position>
             </design:identifier>
             <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
@@ -93,7 +159,23 @@
             <design:nullability>Unknown</design:nullability>
           </design:attributes>
           <design:usageHints>
-            <design:label>jumlah</design:label>
+            <design:label>jenis_barang</design:label>
+            <design:formattingHints/>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>nama_user</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>-1</design:precision>
+            <design:scale>-1</design:scale>
+            <design:nullability>Unknown</design:nullability>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>nama_user</design:label>
             <design:formattingHints/>
           </design:usageHints>
         </design:resultColumnDefinitions>
@@ -114,37 +196,21 @@
         </oda-data-set>
     </data-sets>
     <styles>
-        <style name="table" id="110">
-            <property name="fontFamily">sans-serif</property>
-            <property name="fontSize">10pt</property>
+        <style name="NewStyle" id="48">
             <property name="showIfBlank">true</property>
-            <property name="height">330in</property>
-            <property name="width">210mm</property>
-        </style>
-        <style name="NewStyle" id="288">
-            <property name="fontFamily">"Arial Black"</property>
-            <property name="fontWeight">bolder</property>
-            <property name="textUnderline">none</property>
-            <property name="borderBottomStyle">solid</property>
-            <property name="borderLeftStyle">solid</property>
-            <property name="borderRightStyle">solid</property>
-            <property name="borderTopStyle">solid</property>
-            <structure name="dateTimeFormat">
-                <property name="category">Custom</property>
-                <property name="pattern">d MMM y hh:mm</property>
-                <property name="locale">id_ID</property>
-            </structure>
-            <property name="showIfBlank">true</property>
-            <property name="canShrink">false</property>
-            <property name="height">310in</property>
+            <property name="canShrink">true</property>
+            <property name="height">310mm</property>
             <property name="width">210mm</property>
         </style>
     </styles>
     <page-setup>
         <simple-master-page name="Simple MasterPage" id="2">
+            <property name="orientation">portrait</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">medium</property>
+            <property name="showHeaderOnFirst">true</property>
             <page-footer>
                 <text id="3">
-                    <property name="display">inline</property>
                     <property name="contentType">html</property>
                     <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
                 </text>
@@ -152,53 +218,43 @@
         </simple-master-page>
     </page-setup>
     <body>
-        <image id="285">
+        <image id="6">
             <property name="display">inline</property>
             <property name="height">0.8333333333333334in</property>
             <property name="width">0.8333333333333334in</property>
-            <property name="dataSet">Data Set</property>
-            <list-property name="boundDataColumns">
-                <structure>
-                    <property name="name">nama_barang</property>
-                    <expression name="expression" type="javascript">dataSetRow["nama_barang"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">jumlah</property>
-                    <expression name="expression" type="javascript">dataSetRow["jumlah"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-            </list-property>
             <property name="source">embed</property>
             <property name="imageName">doc_ico.png</property>
         </image>
-        <label id="286">
+        <label id="7">
             <property name="fontSize">24pt</property>
             <property name="display">inline</property>
             <text-property name="text">PT. PANCA BERSOEDARAAN SEDJATI</text-property>
         </label>
-        <label id="293">
-            <property name="fontSize">16pt</property>
-            <property name="borderBottomStyle">solid</property>
-            <property name="borderBottomWidth">medium</property>
-            <property name="textAlign">center</property>
-            <text-property name="text">Laporan Stok Barang</text-property>
-        </label>
-        <table id="269">
-            <property name="borderBottomStyle">solid</property>
-            <property name="borderBottomWidth">medium</property>
-            <property name="borderLeftStyle">solid</property>
-            <property name="borderLeftWidth">medium</property>
-            <property name="borderRightStyle">solid</property>
-            <property name="borderRightWidth">medium</property>
-            <property name="borderTopStyle">solid</property>
-            <property name="borderTopWidth">medium</property>
+        <table id="49">
             <property name="dataSet">Data Set</property>
             <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">tanggal</property>
+                    <text-property name="displayName">tanggal</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["tanggal"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">jenis_barang</property>
+                    <text-property name="displayName">jenis_barang</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["jenis_barang"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
                 <structure>
                     <property name="name">nama_barang</property>
                     <text-property name="displayName">nama_barang</text-property>
                     <expression name="expression" type="javascript">dataSetRow["nama_barang"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">nama_user</property>
+                    <text-property name="displayName">nama_user</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["nama_user"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
@@ -208,76 +264,129 @@
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
+                    <property name="name">harga</property>
+                    <text-property name="displayName">harga</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["harga"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
                     <property name="name">Aggregation</property>
-                    <text-property name="displayName">Jumlah</text-property>
                     <property name="dataType">float</property>
-                    <property name="aggregateFunction">SUM</property>
+                    <property name="aggregateFunction">WEIGHTEDAVE</property>
                     <list-property name="arguments">
                         <structure>
                             <property name="name">Expression</property>
-                            <expression name="value" type="javascript">row["jumlah"]</expression>
+                            <expression name="value" type="javascript">row["harga"]</expression>
+                        </structure>
+                        <structure>
+                            <property name="name">weight</property>
+                            <expression name="value" type="javascript">row["harga"]</expression>
                         </structure>
                     </list-property>
                     <property name="allowExport">true</property>
                 </structure>
             </list-property>
-            <column id="283"/>
-            <column id="284"/>
+            <column id="74"/>
+            <column id="75"/>
+            <column id="76"/>
+            <column id="77"/>
+            <column id="78"/>
+            <column id="79"/>
+            <column id="80"/>
             <header>
-                <row id="270">
-                    <property name="borderBottomStyle">solid</property>
-                    <property name="borderBottomWidth">medium</property>
-                    <property name="borderLeftStyle">solid</property>
-                    <property name="borderLeftWidth">medium</property>
-                    <property name="borderRightStyle">solid</property>
-                    <property name="borderRightWidth">medium</property>
-                    <property name="borderTopStyle">solid</property>
-                    <property name="borderTopWidth">medium</property>
-                    <cell id="271">
-                        <label id="272">
-                            <text-property name="text">nama_barang</text-property>
-                        </label>
+                <row id="50">
+                    <cell id="51">
+                        <text id="82">
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[<B>Tanggal</B>]]></text-property>
+                        </text>
                     </cell>
-                    <cell id="273">
-                        <label id="274">
-                            <text-property name="text">jumlah</text-property>
-                        </label>
+                    <cell id="52">
+                        <text id="83">
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[<B>Jenis Barang</B>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="53">
+                        <text id="84">
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[<B>Nama Barang</B>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="54">
+                        <text id="85">
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[<B>Nama User</B>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="55">
+                        <text id="87">
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[<B>Jumlah</B>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="56">
+                        <text id="88">
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[<B>Harga Satuan</B>]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="57">
+                        <text id="89">
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[<B>Total Harga</B>]]></text-property>
+                        </text>
                     </cell>
                 </row>
             </header>
             <detail>
-                <row id="275">
-                    <cell id="276">
-                        <data id="277">
-                            <property name="textAlign">center</property>
+                <row id="58">
+                    <cell id="59">
+                        <data id="91">
+                            <property name="resultSetColumn">tanggal</property>
+                        </data>
+                    </cell>
+                    <cell id="60">
+                        <data id="92">
+                            <property name="resultSetColumn">jenis_barang</property>
+                        </data>
+                    </cell>
+                    <cell id="61">
+                        <data id="93">
                             <property name="resultSetColumn">nama_barang</property>
                         </data>
                     </cell>
-                    <cell id="278">
-                        <data id="279">
-                            <property name="textAlign">center</property>
+                    <cell id="62">
+                        <data id="94">
+                            <property name="resultSetColumn">nama_user</property>
+                        </data>
+                    </cell>
+                    <cell id="63">
+                        <data id="95">
                             <property name="resultSetColumn">jumlah</property>
+                        </data>
+                    </cell>
+                    <cell id="64">
+                        <data id="96">
+                            <property name="resultSetColumn">harga</property>
+                        </data>
+                    </cell>
+                    <cell id="65">
+                        <data id="97">
+                            <property name="resultSetColumn">Aggregation</property>
                         </data>
                     </cell>
                 </row>
             </detail>
             <footer>
-                <row id="280">
-                    <property name="borderBottomStyle">solid</property>
-                    <property name="borderBottomWidth">medium</property>
-                    <property name="borderLeftStyle">solid</property>
-                    <property name="borderLeftWidth">medium</property>
-                    <property name="borderRightStyle">solid</property>
-                    <property name="borderRightWidth">medium</property>
-                    <property name="borderTopStyle">solid</property>
-                    <property name="borderTopWidth">medium</property>
-                    <cell id="281"/>
-                    <cell id="282">
-                        <data id="295">
-                            <property name="textAlign">center</property>
-                            <property name="resultSetColumn">Aggregation</property>
-                        </data>
-                    </cell>
+                <row id="66">
+                    <cell id="67"/>
+                    <cell id="68"/>
+                    <cell id="69"/>
+                    <cell id="70"/>
+                    <cell id="71"/>
+                    <cell id="72"/>
+                    <cell id="73"/>
                 </row>
             </footer>
         </table>

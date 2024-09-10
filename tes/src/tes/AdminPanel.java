@@ -37,7 +37,7 @@ public class AdminPanel extends JFrame {
      * Create the frame.
      */
     public AdminPanel() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 500, 300);
 
         JMenuBar menuBar = new JMenuBar();
@@ -71,6 +71,12 @@ public class AdminPanel extends JFrame {
         menuBar.add(mnDatabase);
 
         JMenuItem mntmConfig = new JMenuItem("configuration");
+        mntmConfig.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		ConfigInitialize cnf = new ConfigInitialize();
+        		configureAndShowPanel(cnf);
+        	}
+        });
         mnDatabase.add(mntmConfig);
 
         JMenu mnUpdate = new JMenu("update");

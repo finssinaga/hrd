@@ -3,6 +3,7 @@ package tes;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -47,11 +48,11 @@ public class SqlUrl {
 	            IReportEngine engine = new ReportEngine(config);
 
 	            // Create a report task
-	            IReportRunnable reportRunnable = engine.openReportDesign(System.getProperty("user.dir")+confloader("server.reportdir")+reportname);
+	            IReportRunnable reportRunnable = engine.openReportDesign(System.getProperty("user.dir")+confloader("server.reportdir")+reportname+".rptdesign");
 	            IRunAndRenderTask task = engine.createRunAndRenderTask(reportRunnable);
 	            // Define render options
 	            HTMLRenderOption options = new HTMLRenderOption();
-	            options.setOutputFileName("output/report.html");
+	            options.setOutputFileName(System.getProperty("user.dir")+confloader("server.outputdir")+"report.html");
 	            options.setOutputFormat("html");
 	            task.setRenderOption(options);
 
@@ -104,7 +105,7 @@ public class SqlUrl {
 		return driver;
 	}
 	public static String confdir() {
-		String config = System.getProperty("user.dir")+"/config/hrd.config";
+		String config = "config/hrd.config";
 		return config;
 	}
 	public static String url(){
@@ -114,10 +115,10 @@ public class SqlUrl {
 		return url;
 	}
 	
-	public static Object config(String configs, String key){
-		Object conf;
+	public static void config(String configs, String key){
+		
 		Properties urls = new Properties();
-		String config = System.getProperty("user.dir")+"/bin/hrd.config";
+		String config = System.getProperty("user.dir")+"/config/hrd.config";
 		
 			try (FileInputStream load = new FileInputStream(config)){
 				urls.load(load);
@@ -125,8 +126,17 @@ public class SqlUrl {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			conf = urls.setProperty(configs, key);
-			return conf;
+			urls.setProperty(key, configs);
+			try {
+				urls.store(new FileOutputStream(config), null);
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	public static String user() {
 		String url;
@@ -214,7 +224,7 @@ public class SqlUrl {
 		}
 		return cn;
 	}
-	public static void importToXML(JTable tabla, File file) throws FileNotFoundException {
+	public static void importToXML(JTable tabla, String filename) throws FileNotFoundException {
         try {
             DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
@@ -236,7 +246,7 @@ public class SqlUrl {
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource domSource = new DOMSource(document);
 
-            StreamResult streamResult = new StreamResult(file);
+            StreamResult streamResult = new StreamResult(confloader("user.dir")+confloader("server.outputdir")+filename+".xml");
             transformer.transform(domSource, streamResult);
         } catch (ParserConfigurationException | TransformerException pce) {
             JOptionPane.showMessageDialog(null, "Error: " + pce.toString());
