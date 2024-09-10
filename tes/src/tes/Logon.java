@@ -96,6 +96,7 @@ public class Logon extends JFrame {
 		lbIcon.setBackground(new Color(255, 255, 255));
 		lbIcon.setIcon((Icon) icon);
 		txtUser = new JTextField();
+		txtUser.grabFocus();
 		txtUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				txtPass.grabFocus();
@@ -132,41 +133,19 @@ public class Logon extends JFrame {
 		
 		lblPassword.setForeground(new Color(255, 255, 255));
 		lblPassword.setLabelFor(txtPass);
-
+		
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String Userid = txtUser.getText();
 				String Passwd = txtPass.getText();
-				try {
 					String suclogin = "Selamat Datang "+userid();
 					if (Userid.equals(userid())&&Passwd.equals(pass())) {
 						JOptionPane.showMessageDialog(panel,suclogin);
 						MainMenu.main(null);
-						String nmfs = lvlAdms();
-						File f = new File(SqlUrl.dir(),nmfs);
-						try {
-							f.createNewFile();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 						System.out.println("Working Directory = " + SqlUrl.dir());
-					}else {
-						JOptionPane.showMessageDialog(panel, "login gagal");
-						System.out.println(userid());
 					}
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SQLException e) {
-					txtUser.setText(null);
-					txtPass.setText(null);
-					JOptionPane.showMessageDialog(panel, "login failed");
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
 			}
-		});
+			});
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
@@ -253,20 +232,41 @@ public class Logon extends JFrame {
 		
 		
 	}
-public String userid() throws ClassNotFoundException, SQLException {
-		String query = "select * from user where userid = "+"'"+txtUser.getText()+"'";
-		String Suser = SqlUrl.sqlGet(query, 1).toString();
+public String userid() {
+		String Suser = null;
+		try {
+			String query = "select * from user where userid = "+"'"+txtUser.getText()+"'";
+			Suser = SqlUrl.sqlGet(query, 1).toString();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "username salah");
+		}
 		
 	return Suser;
 }
-public String pass() throws ClassNotFoundException, SQLException {
-	String query = "select * from user where pass = "+"'"+txtPass.getText()+"'";
-	String pw = SqlUrl.sqlGet(query, 2).toString();
+public String pass() {
+	String pw = null;
+	try {
+		String query = "select * from user where pass = "+"'"+txtPass.getText()+"'";
+		pw = SqlUrl.sqlGet(query, 2).toString();
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		JOptionPane.showMessageDialog(null, "password salah");
+	}
 	return pw;
 }
-public String lvlAdms() throws ClassNotFoundException, SQLException {
-	String query = "select * from user where userid = "+"'"+txtUser.getText()+"'";
-	String lvl = SqlUrl.sqlGet(query, 3).toString();
+public String lvlAdms() {
+	String lvl = null;
+	try {
+		String query = "select * from user where userid = "+"'"+txtUser.getText()+"'";
+		lvl = SqlUrl.sqlGet(query, 3).toString();
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		JOptionPane.showMessageDialog(null, "maaf, anda tidak mempunyai akses");
+	}
 	return lvl;
 }
 

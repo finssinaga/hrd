@@ -95,7 +95,7 @@ public class MasterKendaraan extends JPanel {
 		scrollPane.setViewportView(table);
 		setLayout(groupLayout);
 		
-		String quer = "select * from master_armada";
+		String quer = "select `tanggal_input`,`jenis_armada`,`no_pol`,`merk`,`driver` from master_armada";
 		String[] md = SqlUrl.sqlGetColumn(quer);
 		comboBox.setModel(new DefaultComboBoxModel<>(md));
 		DefaultTableModel l = (DefaultTableModel)table.getModel();
@@ -114,10 +114,10 @@ public class MasterKendaraan extends JPanel {
 					String tanggal = null,jenis = null,nopol = null,merk = null,driver = null;
 					while (res.next()) {
 						tanggal=res.getString(1);
-						jenis=res.getString(2);
-						nopol=res.getString(3);
-						merk=res.getString(4);
-						driver=res.getString(5);
+						jenis=res.getString(3);
+						nopol=res.getString(4);
+						merk=res.getString(5);
+						driver=res.getString(6);
 					}
 					Object[] rdt = {tanggal,jenis,nopol,merk,driver};
 					tb.addRow(rdt);

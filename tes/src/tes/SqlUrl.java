@@ -183,21 +183,16 @@ public class SqlUrl {
 		boolean che = ArrayUtils.contains(arra, nama);
 		return che;
 	}
-	public static Object[] sqlGet(String query, int columnIndex) {
-		Object[] sql = null;
+	public static Object sqlGet(String query, int columnIndex) {
+		Object sql = null;
 		try {
 			Class.forName(Driver());
 			Connection con = DriverManager.getConnection(url(),user(),pass());
 			Statement stat = con.createStatement();
 			String qu = query;
 			ResultSet res = stat.executeQuery(qu);
-			int i=0;
-			int dt=5;
-			if(res.next()) {
-				sql=new Object[dt];
-				
-				sql[i]=res.getObject(columnIndex);
-				i++;
+			while(res.next()) {
+				sql=res.getObject(columnIndex);
 			}
 			
 		}catch (SQLException | ClassNotFoundException eror) {

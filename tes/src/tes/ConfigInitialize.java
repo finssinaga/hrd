@@ -15,6 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.wsdl.Output;
+
+import org.apache.commons.io.FileUtils;
+
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 
@@ -76,6 +79,11 @@ public class ConfigInitialize extends JPanel {
 		JButton btnApplySetting = new JButton("apply setting");
 		
 		JButton btnOpenSetting = new JButton("open setting");
+		btnOpenSetting.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getset();
+			}
+		});
 		
 		userdir.setText(System.getProperty("user.dir"));
 		btnApplySetting.addActionListener(new ActionListener() {
@@ -100,12 +108,19 @@ public class ConfigInitialize extends JPanel {
 				SqlUrl.config(System.getProperty("user.dir"),"user.dir");
 				
 				try {
-					
 					Files.createDirectory(Paths.get(SqlUrl.dir()+SqlUrl.confloader("server.outputdir")));
+					Files.createDirectory(Paths.get(SqlUrl.dir()+SqlUrl.confloader("server.reportdir")));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+		});
+		
+		JButton btnDefault = new JButton("default");
+		btnDefault.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				defaultSet();
 			}
 		});
 		GroupLayout groupLayout = new GroupLayout(this);
@@ -131,17 +146,21 @@ public class ConfigInitialize extends JPanel {
 						.addComponent(userdir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(reportdir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(outdir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(jdbcurl, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addGap(47)
-							.addComponent(btnApplySetting)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnOpenSetting))
-						.addComponent(jdbcuser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(jdbcport, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(jdbcpass, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(jdbcdb, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(26, Short.MAX_VALUE))
+						.addComponent(jdbcdb, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+							.addGroup(groupLayout.createSequentialGroup()
+								.addComponent(jdbcuser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnDefault))
+							.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+								.addComponent(jdbcurl, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addGap(47)
+								.addComponent(btnApplySetting)
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addComponent(btnOpenSetting))))
+					.addContainerGap(22, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -153,36 +172,55 @@ public class ConfigInitialize extends JPanel {
 						.addComponent(btnApplySetting)
 						.addComponent(btnOpenSetting))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(jdbcuser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblJdbcUser))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblJdbcPass)
-						.addComponent(jdbcpass, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(jdbcport, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblJdbcPort))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(jdbcdb, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblJdbcDatabase))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(outdir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblOutputDir))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(reportdir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblReportDir))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(userdir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblWorkingDirectory))
-					.addContainerGap(87, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jdbcuser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblJdbcUser))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblJdbcPass)
+								.addComponent(jdbcpass, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jdbcport, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblJdbcPort))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jdbcdb, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblJdbcDatabase))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(outdir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblOutputDir))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(reportdir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblReportDir))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(userdir, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblWorkingDirectory)))
+						.addComponent(btnDefault))
+					.addContainerGap(84, Short.MAX_VALUE))
 		);
 		setLayout(groupLayout);
 
 	}
+public void defaultSet() {
+	jdbcurl.setText("100.90.166.57");
+	jdbcuser.setText("hrdjerapah");
+	jdbcport.setText("3306");
+	jdbcdb.setText("hrd");
+	outdir.setText("output");
+	reportdir.setText("report");
+}
+public void getset() {
+	jdbcurl.setText(SqlUrl.confloader("server.url"));
+	jdbcuser.setText(SqlUrl.confloader("server.user"));
+	jdbcport.setText(SqlUrl.confloader("server.port"));
+	jdbcdb.setText(SqlUrl.confloader("server.database"));
+	outdir.setText(SqlUrl.confloader("server.outputdir"));
+	reportdir.setText(SqlUrl.confloader("server.reportdir"));
+}
 }

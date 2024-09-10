@@ -28,6 +28,7 @@ public class InputMasterKendaraan extends JPanel {
 	private JTable table;
 	private JButton btnX;
 	private MainMenu mn;
+	private JLabel usr;
 
 	/**
 	 * Create the panel.
@@ -35,6 +36,7 @@ public class InputMasterKendaraan extends JPanel {
 	public InputMasterKendaraan(MainMenu mn) {
 		this.mn=mn;
 		this.btnX=mn.btX();
+		this.usr=mn.uslog();
 		table = new JTable();
 		JLabel lblInputMasterKendaraan = new JLabel("Input Master Armada");
 		lblInputMasterKendaraan.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -169,7 +171,7 @@ public void upload() {
 	try {
 		Class.forName(SqlUrl.Driver());
 		Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
-		String query = "insert into master_armada(`jenis_armada`,`no_pol`,`merk`,`driver`) values (?,?,?,?)";
+		String query = "insert into master_armada(`jenis_armada`,`no_pol`,`merk`,`driver`,`user`) values (?,?,?,?,?)";
 		PreparedStatement prep = con.prepareStatement(query);
 		Object jens,npl,mrk,drivr;
 		for (int i=0;i<inp.getRowCount();i++) {
@@ -181,6 +183,7 @@ public void upload() {
 			prep.setObject(2, npl);
 			prep.setObject(3, mrk);
 			prep.setObject(4, drivr);
+			prep.setObject(5, usr.getText());
 			prep.execute();
 			
 		}

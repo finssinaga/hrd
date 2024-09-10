@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.awt.Insets;
 import javax.swing.GroupLayout;
@@ -23,6 +24,8 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Toolkit;
+import javax.swing.JLabel;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class MainMenu extends JFrame {
 	
@@ -42,6 +45,9 @@ public class MainMenu extends JFrame {
 	private JMenuItem mntmInputPerbaikan;
 	private JMenuItem mntmMasterSparepart;
 	private JMenuItem mntmTest;
+	private JLabel usrlx;
+	private JLabel perms;
+	private String level;
 
 	/**
 	 * Launch the application.
@@ -61,21 +67,24 @@ public class MainMenu extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
 	 * @throws Exception 
 	 */
-	public MainMenu() {
+	public MainMenu() throws ClassNotFoundException, SQLException {
 		setTitle("Program");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainMenu.class.getResource("/icon/doc_ico.png")));
 		setVisible(true);
 		setExtendedState(Frame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		
 		menuBar = new JMenuBar();
 		menuBar.setPreferredSize(new Dimension(0, 30));
 		menuBar.setMargin(new Insets(2, 15, 2, 0));
 		setJMenuBar(menuBar);
 		this.logs = Logon.getlg().getUser();
-		
+		this.level=Logon.getlg().lvlAdms();
 		JMenu mnMaster = new JMenu("Master");
 		mnMaster.setFont(new Font("Arial", Font.BOLD, 14));
 		menuBar.add(mnMaster);
@@ -95,7 +104,7 @@ public class MainMenu extends JFrame {
 			}
 		});
 		mnMaster.add(mntmInputMaster);
-		
+		Logon.getlg().dispose();
 		
 		mnMaster.add(mntmMasterKendaraan);
 		
@@ -113,7 +122,7 @@ public class MainMenu extends JFrame {
 		mntmMasterSparepart = new JMenuItem("Master SparePart");
 		mntmMasterSparepart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JPanel p = new MasterPart();
+				JPanel p = new MasterPart(MainMenu.this);
 				conpanel(p);
 			}
 		});
@@ -168,6 +177,14 @@ public class MainMenu extends JFrame {
 		
 		mntmLaporanHistoryPerbaikan = new JMenuItem("Laporan History Perbaikan");
 		mnLaporan.add(mntmLaporanHistoryPerbaikan);
+		usrlx=new JLabel();
+		perms=new JLabel();
+		perms.setVisible(false);
+		perms.setText(level);
+		usrlx.setVisible(false);
+		usrlx.setText(logs);
+		menuBar.add(usrlx);
+		menuBar.add(perms);
 		
 		btnX = new JButton("x");
 		btnX.setVisible(false);
@@ -177,10 +194,11 @@ public class MainMenu extends JFrame {
 				getContentPane().repaint();
 			}
 		});
+		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap(385, Short.MAX_VALUE)
 					.addComponent(btnX)
 					.addContainerGap())
@@ -190,7 +208,7 @@ public class MainMenu extends JFrame {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(btnX)
-					.addContainerGap(207, Short.MAX_VALUE))
+					.addContainerGap(198, Short.MAX_VALUE))
 		);
 		getContentPane().setLayout(groupLayout);
 		
@@ -211,6 +229,12 @@ public class MainMenu extends JFrame {
 	}
 	public JButton btX() {
 		return btnX;
+	}
+	public JLabel uslog() {
+		return usrlx;
+	}
+	public JLabel usrlevel() {
+		return perms;
 	}
 	public void conpanel(JPanel panel) {
 		cls();

@@ -118,14 +118,7 @@ public class OpenData extends JPanel {
 		
 		JButton btnNewButton = new JButton("New button");
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Object[] tp = SqlUrl.sqlGet("select `jeniskend` from hrds", 1);
-				int i=0;
-				
-				Object ss = tp[0]+""+tp[1]+tp[2];
-				JOptionPane.showMessageDialog(null, ss);
-				
-				
+			public void actionPerformed(ActionEvent e) {	
 			}
 		});
 		GroupLayout gl_panel = new GroupLayout(this);
