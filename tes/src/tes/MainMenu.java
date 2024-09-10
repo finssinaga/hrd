@@ -47,7 +47,7 @@ public class MainMenu extends JFrame {
 	private JMenuItem mntmTest;
 	private JLabel usrlx;
 	private JLabel perms;
-	private String level;
+	private String levels;
 
 	/**
 	 * Launch the application.
@@ -67,9 +67,6 @@ public class MainMenu extends JFrame {
 
 	/**
 	 * Create the frame.
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException 
-	 * @throws Exception 
 	 */
 	public MainMenu() throws ClassNotFoundException, SQLException {
 		setTitle("Program");
@@ -84,7 +81,7 @@ public class MainMenu extends JFrame {
 		menuBar.setMargin(new Insets(2, 15, 2, 0));
 		setJMenuBar(menuBar);
 		this.logs = Logon.getlg().getUser();
-		this.level=Logon.getlg().lvlAdms();
+		this.levels=Logon.getlg().getLevel();
 		JMenu mnMaster = new JMenu("Master");
 		mnMaster.setFont(new Font("Arial", Font.BOLD, 14));
 		menuBar.add(mnMaster);
@@ -178,13 +175,15 @@ public class MainMenu extends JFrame {
 		mntmLaporanHistoryPerbaikan = new JMenuItem("Laporan History Perbaikan");
 		mnLaporan.add(mntmLaporanHistoryPerbaikan);
 		usrlx=new JLabel();
-		perms=new JLabel();
-		perms.setVisible(false);
-		perms.setText(level);
 		usrlx.setVisible(false);
+		
+		perms = new JLabel("");
+		perms.setVisible(true);
+		
+		perms.setText(levels);
+		menuBar.add(perms);
 		usrlx.setText(logs);
 		menuBar.add(usrlx);
-		menuBar.add(perms);
 		
 		btnX = new JButton("x");
 		btnX.setVisible(false);

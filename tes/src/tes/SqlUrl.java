@@ -101,8 +101,8 @@ public class SqlUrl {
 	        }}
 	
 	public static String Driver() {
-		String driver = "com.mysql.cj.jdbc.Driver";
-		return driver;
+		String drive = "com.mysql.cj.jdbc.Driver";
+		return drive;
 	}
 	public static String confdir() {
 		String config = "config/hrd.config";

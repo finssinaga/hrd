@@ -46,6 +46,7 @@ public class Logon extends JFrame {
 	private JTextField txtUser;
 	private JPasswordField txtPass;
 	private static Logon lgn;
+	private JTextField levels;
 	public static synchronized Logon getlg() {
 		if (lgn == null ) {
 			lgn= new Logon();
@@ -138,6 +139,7 @@ public class Logon extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String Userid = txtUser.getText();
 				String Passwd = txtPass.getText();
+				levels.setText(lvlAdms());
 					String suclogin = "Selamat Datang "+userid();
 					if (Userid.equals(userid())&&Passwd.equals(pass())) {
 						JOptionPane.showMessageDialog(panel,suclogin);
@@ -146,24 +148,34 @@ public class Logon extends JFrame {
 					}
 			}
 			});
+		
+		levels = new JTextField();
+		levels.setVisible(false);
+		levels.setColumns(10);
 		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
 		gl_panel_1.setHorizontalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
-					.addGap(36)
 					.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnLogin)
-						.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
-							.addComponent(lblPassword)
-							.addComponent(txtUser, GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-							.addComponent(lblUser)
-							.addComponent(txtPass)))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(36)
+							.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnLogin)
+								.addGroup(gl_panel_1.createParallelGroup(Alignment.LEADING, false)
+									.addComponent(lblPassword)
+									.addComponent(txtUser, GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+									.addComponent(lblUser)
+									.addComponent(txtPass))))
+						.addGroup(gl_panel_1.createSequentialGroup()
+							.addGap(48)
+							.addComponent(levels, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap(59, Short.MAX_VALUE))
 		);
 		gl_panel_1.setVerticalGroup(
 			gl_panel_1.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel_1.createSequentialGroup()
-					.addGap(59)
+					.addComponent(levels, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(39)
 					.addComponent(lblUser)
 					.addGap(5)
 					.addComponent(txtUser, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -213,7 +225,7 @@ public class Logon extends JFrame {
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(38)
-					.addComponent(lbIcon, GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+					.addComponent(lbIcon, GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
 					.addGap(11)
 					.addComponent(ComName, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
@@ -257,7 +269,7 @@ public String pass() {
 	}
 	return pw;
 }
-public String lvlAdms() {
+	public String lvlAdms() {
 	String lvl = null;
 	try {
 		String query = "select * from user where userid = "+"'"+txtUser.getText()+"'";
@@ -276,5 +288,7 @@ public String lvlAdms() {
 	public String getPass() {
 		return txtPass.getText();
 	}
-	
+	public String getLevel() {
+		return levels.getText();
+	}
 }
