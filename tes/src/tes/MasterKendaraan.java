@@ -7,6 +7,8 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
@@ -105,7 +107,7 @@ public class MasterKendaraan extends JPanel {
 				DefaultTableModel tb = (DefaultTableModel)table.getModel();
 				tb.setRowCount(0);
 				String sort = comboBox.getSelectedItem().toString();
-				String query = "select * from master_armada order by '"+sort+"'";
+				String query = "select * from master_armada order by `master_armada`.`"+sort+"` asc";
 				try {
 					Class.forName(SqlUrl.Driver());
 					Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
@@ -118,9 +120,10 @@ public class MasterKendaraan extends JPanel {
 						nopol=res.getString(4);
 						merk=res.getString(5);
 						driver=res.getString(6);
+						Object[] rdt = {tanggal,jenis,nopol,merk,driver};
+						tb.addRow(rdt);
 					}
-					Object[] rdt = {tanggal,jenis,nopol,merk,driver};
-					tb.addRow(rdt);
+					
 					
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
@@ -128,6 +131,7 @@ public class MasterKendaraan extends JPanel {
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, e);
 				}
 			}
 		});

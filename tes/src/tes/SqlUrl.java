@@ -200,6 +200,27 @@ public class SqlUrl {
 		}
 		return sql;
 	}
+	public static int sqlGetRowCount(String query) {
+		int roc=0;
+		try {
+			Class.forName(Driver());
+			Connection con = DriverManager.getConnection(url(),user(),pass());
+			Statement stat = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+			String qu = query;
+			ResultSet res = stat.executeQuery(qu);
+			res.last();
+			roc=res.getRow();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e);
+		}
+		return roc;
+		
+	}
 	public static String[] sqlGetColumn(String query) {
 		String[] cn = null;
 		int col = 0;
@@ -223,6 +244,31 @@ public class SqlUrl {
 			e.printStackTrace();
 		}
 		return cn;
+	}
+	public static String[] sqlGetSingleRow(String query) {
+		
+		String[] cnp=null;
+		int rowc = SqlUrl.sqlGetRowCount(query);
+		try {
+			Class.forName(SqlUrl.Driver());
+			Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
+			Statement stat = con.createStatement();
+			ResultSet res = stat.executeQuery(query);
+			int i =0;
+			cnp=new String[rowc];
+			while(res.next()) {
+				cnp[i]=res.getString(1);
+				i++;
+			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e);
+		}
+		return cnp;
 	}
 	public static void importToXML(JTable tabla, String filename) throws FileNotFoundException {
         try {

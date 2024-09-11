@@ -158,6 +158,12 @@ public class MainMenu extends JFrame {
 		menuBar.add(mnPerbaikan);
 		
 		mntmInputPerbaikan = new JMenuItem("Perbaikan Part");
+		mntmInputPerbaikan.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JPanel p = new PerbaikanArmada();
+				conpanel(p);
+			}
+		});
 		mnPerbaikan.add(mntmInputPerbaikan);
 		
 		mnLaporan = new JMenu("Laporan");
@@ -178,7 +184,7 @@ public class MainMenu extends JFrame {
 		usrlx.setVisible(false);
 		
 		perms = new JLabel("");
-		perms.setVisible(true);
+		perms.setVisible(false);
 		
 		perms.setText(levels);
 		menuBar.add(perms);

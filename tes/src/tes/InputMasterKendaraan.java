@@ -18,6 +18,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.concurrent.TimeoutException;
 import java.awt.event.ActionEvent;
 
 public class InputMasterKendaraan extends JPanel {
@@ -185,17 +186,17 @@ public void upload() {
 			prep.setObject(4, drivr);
 			prep.setObject(5, usr.getText());
 			prep.execute();
-			
+			Thread.sleep(1000);
 		}
 	} catch (ClassNotFoundException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
-	} catch (SQLException e) {
+	} catch (SQLException | InterruptedException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 		JOptionPane.showMessageDialog(null, e);
 	}finally {
-		JOptionPane.showConfirmDialog(null, "upload data ??");
+		JOptionPane.showMessageDialog(null, "success");
 	}
 	inp.setRowCount(0);
 	
