@@ -9,6 +9,13 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Time;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
@@ -19,7 +26,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+
+import javafx.util.converter.LocalTimeStringConverter;
+
 import java.util.Locale;
+import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
+import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 
 public class PerbaikanArmada extends JPanel {
 	private JTextField merkPart;
@@ -31,6 +43,8 @@ public class PerbaikanArmada extends JPanel {
 	private JComboBox nomorPol;
 	private JTextField kilometer;
 	private DatePicker tanggalPerbaikan;
+	private JComboBox jenisPart;
+	private LocalTime jam;
 	/**
 	 * @wbp.nonvisual location=448,79
 	 */
@@ -79,9 +93,14 @@ public class PerbaikanArmada extends JPanel {
 		kilometer = new JTextField();
 		
 		tanggalPerbaikan = new DatePicker();
+		tanggalPerbaikan.addDateChangeListener(new DateChangeListener() {
+			public void dateChanged(DateChangeEvent event) {
+				jam = LocalTime.now();
+			}
+		});
 		tanggalPerbaikan.setSettings(datePickerSettings);
 		
-		JComboBox jenisPart = new JComboBox();
+		jenisPart = new JComboBox();
 		
 		JLabel lblMerkSparepart = new JLabel("Merk Sparepart");
 		
@@ -202,7 +221,11 @@ public class PerbaikanArmada extends JPanel {
 		
 		
 		
-		
+		btnTambah.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent po) {
+				tambah();
+			}
+		});
 		
 		jenisArmada.setModel(new DefaultComboBoxModel(armada()));
 		jenisArmada.addActionListener(new ActionListener() {
@@ -236,7 +259,7 @@ public class PerbaikanArmada extends JPanel {
 	}
 	public void tambah() {
 		DefaultTableModel tbh = (DefaultTableModel)table.getModel();
-		String merk,jumlah,bengkel,ket,jenisarm,nopol,kilo,tgperbaikan;
+		String merk,jumlah,bengkel,ket,jenisarm,nopol,kilo,tgperbaikan,jenspart;
 		merk=merkPart.getText();
 		jumlah=jumlahPart.getText();
 		bengkel=namaBengkel.getText();
@@ -244,8 +267,20 @@ public class PerbaikanArmada extends JPanel {
 		jenisarm=jenisArmada.getSelectedItem().toString();
 		nopol=nomorPol.getSelectedItem().toString();
 		kilo=kilometer.getText();
-		tgperbaikan=tanggalPerbaikan.getText();
-		
-		String[] rdt = {jenisarm,nopol,kilo,tgperbaikan,
+		tgperbaikan=tanggalPerbaikan.getText()+" "+jam;
+		jenspart=jenisPart.getSelectedItem().toString();
+		String[] rdt = {jenisarm,nopol,kilo,tgperbaikan,jenspart,merk,jumlah,bengkel,ket};
+		tbh.addRow(rdt);
+	}
+	public void simpan() {
+		DefaultTableModel smp = (DefaultTableModel)table.getModel();
+		Class.forName(SqlUrl.Driver());
+		Connection con = DriverManager.getConnection(SqlUrl.url(),SqlUrl.user(),SqlUrl.pass());
+		String query = "INSERT INTO `history_perbaikan` (`jenis_armada`, `merk_armada`, `no_pol`, `kilometer`, `tanggal_perbaikan`, `jenis_part`, `merk_part`, `nama_bengkel`, `driver`, `keterangan`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+		PreparedStatement prep = con.prepareStatement(query);
+		String merk,jumlah,bengkel,ket,jenisarm,nopol,kilo,tgperbaikan,jenspart;
+		for (int i = 0;i<smp.getRowCount();i++) {
+			
+		}
 	}
 }
