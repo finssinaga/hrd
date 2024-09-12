@@ -160,7 +160,7 @@ public class MainMenu extends JFrame {
 		mntmInputPerbaikan = new JMenuItem("Perbaikan Part");
 		mntmInputPerbaikan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JPanel p = new PerbaikanArmada();
+				JPanel p = new PerbaikanArmada(MainMenu.this);
 				conpanel(p);
 			}
 		});

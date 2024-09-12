@@ -240,7 +240,7 @@ public class MasterPart extends JPanel {
 		mrk=merk.getText();
 		no=noseri.getText();
 		thn=thnbuat.getText();
-		tgl=tglbeli.getText()+" "+time;
+		tgl=tglbeli.getText();
 		jml=jmlh.getText();
 		hrgsat=harga.getText();
 		npol=nopol.getSelectedItem().toString();
