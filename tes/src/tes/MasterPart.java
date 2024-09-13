@@ -288,7 +288,7 @@ public class MasterPart extends JPanel {
 		}
 	}
 	public String[] cbmod() {
-		String cnopol = "select no_pol from master_armada";
+		String cnopol = "select no_pol from master_armada group by no_pol";
 		String[] cnp=null;
 		int rowc = SqlUrl.sqlGetRowCount(cnopol);
 		try {

@@ -19,6 +19,7 @@ import java.time.temporal.ChronoUnit;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.JComboBox;
 import com.github.lgooddatepicker.components.DatePicker;
 import javax.swing.JTextField;
@@ -30,6 +31,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Vector;
 import java.awt.Rectangle;
 import java.awt.Point;
 import java.awt.Component;
@@ -55,12 +57,19 @@ public class PerbaikanArmada extends JPanel {
 	private JTextField noseriOld;
 	private JTextField tahunpembuatanOld;
 	private JTextField tanggalpembelianOld;
+	private DatePicker tanggalpembelianNew;
 	
 	/**
 	 * @wbp.nonvisual location=448,79
 	 */
 	private final DatePickerSettings datePickerSettings = new DatePickerSettings();
 	private JComboBox driver;
+	private JTextField merkpartNew;
+	private JTextField noseriNew;
+	private JTextField tahunpembuatanNew;
+	private JTable tblupload;
+	private JTextField hargaOld;
+	private JTextField hargaNew;
 
 	/**
 	 * Create the panel.
@@ -115,6 +124,7 @@ public class PerbaikanArmada extends JPanel {
 		JLabel lblMerkSparepart = new JLabel("Sparepart Pengganti");
 		
 		merkPart = new JTextField();
+		merkPart.setEditable(false);
 		merkPart.setColumns(10);
 		
 		jumlahPart = new JTextField();
@@ -162,16 +172,51 @@ public class PerbaikanArmada extends JPanel {
 		JLabel lblTahunPembuatan = new JLabel("Tahun Pembuatan");
 		
 		JLabel lblNewLabel_2 = new JLabel("Tanggal Pembelian");
+		
+		JLabel lblJenisPart = new JLabel("Jenis Part");
+		
+		JLabel lblMerkPart_1 = new JLabel("Merk Part");
+		
+		merkpartNew = new JTextField();
+		merkpartNew.setColumns(10);
+		
+		noseriNew = new JTextField();
+		noseriNew.setColumns(10);
+		
+		JLabel lblNomorSeri = new JLabel("Nomor Seri");
+		
+		tahunpembuatanNew = new JTextField();
+		tahunpembuatanNew.setColumns(10);
+		
+		JLabel lblTahunPembuatan_1 = new JLabel("Tahun Pembuatan");
+		
+		JLabel lblTanggalPembelian = new JLabel("Tanggal Pembelian");
+		
+		tanggalpembelianNew = new DatePicker();
+		
+		hargaOld = new JTextField();
+		hargaOld.setEditable(false);
+		hargaOld.setColumns(10);
+		
+		JLabel lblHargaSatuan = new JLabel("Harga Satuan");
+		
+		hargaNew = new JTextField();
+		hargaNew.setColumns(10);
+		
+		JLabel lblHargaSatuan_1 = new JLabel("Harga Satuan");
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 918, Short.MAX_VALUE)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 942, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addComponent(lblPerbaikanArmada)
-							.addPreferredGap(ComponentPlacement.RELATED, 577, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED, 601, Short.MAX_VALUE)
 							.addComponent(btnTambah)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnSimpan)
@@ -184,43 +229,65 @@ public class PerbaikanArmada extends JPanel {
 								.addComponent(lblKilometer)
 								.addComponent(lblTanggalPerbaikan)
 								.addComponent(lblSparepartYangDiganti)
+								.addComponent(lblMerkArmada)
 								.addComponent(lblMerkSparepart)
 								.addComponent(lblJumlahSparepart)
-								.addComponent(lblMerkArmada)
-								.addComponent(lblKeterangan)
+								.addComponent(lblDriver)
 								.addComponent(lblNamaBengkel)
-								.addComponent(lblDriver))
+								.addComponent(lblKeterangan))
 							.addGap(43)
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(tanggalPerbaikan, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(kilometer, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(jenisPart, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(merkPart, Alignment.LEADING)
-								.addComponent(jumlahPart, Alignment.LEADING)
-								.addComponent(namaBengkel, Alignment.LEADING)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(tanggalPerbaikan, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(kilometer)
 								.addComponent(nomorPol, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(merkArmada, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(keterangan, Alignment.LEADING)
-								.addComponent(driver, Alignment.LEADING, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(jenisArmada, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel, Alignment.LEADING))
+								.addComponent(merkArmada, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(jenisArmada, 0, 151, Short.MAX_VALUE)
+								.addComponent(lblJenisPart)
+								.addComponent(namaBengkel, 151, 151, 151)
+								.addComponent(jumlahPart, 151, 151, 151)
+								.addComponent(merkPart, 151, 151, 151)
+								.addComponent(lblNewLabel)
+								.addComponent(keterangan, 151, 151, 151)
+								.addComponent(driver, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE)
+								.addComponent(jenisPart, GroupLayout.PREFERRED_SIZE, 151, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+									.addComponent(merkpartNew, Alignment.LEADING)
+									.addComponent(lblMerkPart, Alignment.LEADING)
+									.addComponent(merkpartOld, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE))
+								.addComponent(lblMerkPart_1))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(merkpartOld, GroupLayout.PREFERRED_SIZE, 111, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblMerkPart))
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+									.addComponent(noseriNew)
+									.addComponent(noseriOld, GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
+									.addComponent(lblNewLabel_1))
+								.addComponent(lblNomorSeri))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(noseriOld, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel_1))
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+									.addComponent(tahunpembuatanNew)
+									.addComponent(tahunpembuatanOld, GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+									.addComponent(lblTahunPembuatan))
+								.addComponent(lblTahunPembuatan_1))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(tahunpembuatanOld, GroupLayout.PREFERRED_SIZE, 109, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblTahunPembuatan))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(lblTanggalPembelian)
 								.addComponent(lblNewLabel_2)
-								.addComponent(tanggalpembelianOld, GroupLayout.PREFERRED_SIZE, 98, GroupLayout.PREFERRED_SIZE))))
+								.addComponent(tanggalpembelianOld, GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+								.addComponent(tanggalpembelianNew, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblHargaSatuan_1)
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+									.addComponent(lblHargaSatuan)
+									.addComponent(hargaOld, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+									.addComponent(hargaNew)))))
 					.addContainerGap())
+				.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+					.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 637, Short.MAX_VALUE)
+					.addGap(42))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -252,43 +319,76 @@ public class PerbaikanArmada extends JPanel {
 						.addComponent(lblTanggalPerbaikan)
 						.addComponent(tanggalPerbaikan, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel)
-						.addComponent(lblMerkPart)
-						.addComponent(lblNewLabel_1)
-						.addComponent(lblTahunPembuatan)
-						.addComponent(lblNewLabel_2))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblSparepartYangDiganti)
-						.addComponent(jenisPart, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(merkpartOld, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(noseriOld, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(tahunpembuatanOld, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(tanggalpembelianOld, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblMerkSparepart)
-						.addComponent(merkPart, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(5)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblJumlahSparepart)
-						.addComponent(jumlahPart, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(4)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(driver, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblDriver))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(namaBengkel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNamaBengkel))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(keterangan, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblKeterangan))
-					.addGap(118)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(lblNewLabel)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblSparepartYangDiganti)
+								.addComponent(jenisPart, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(lblJenisPart)
+							.addGap(3)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(merkPart, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblMerkSparepart)
+								.addComponent(merkpartNew, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(noseriNew, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(tahunpembuatanNew, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(tanggalpembelianNew, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(hargaNew, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(5)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(jumlahPart, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblJumlahSparepart))
+							.addGap(4)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(driver, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblDriver))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(namaBengkel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblNamaBengkel))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(keterangan, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblKeterangan)))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblMerkPart)
+								.addComponent(lblNewLabel_1)
+								.addComponent(lblTahunPembuatan)
+								.addComponent(lblNewLabel_2)
+								.addComponent(lblHargaSatuan))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(merkpartOld, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(noseriOld, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(tahunpembuatanOld, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(tanggalpembelianOld, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(hargaOld, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblMerkPart_1)
+								.addComponent(lblNomorSeri)
+								.addComponent(lblTahunPembuatan_1)
+								.addComponent(lblTanggalPembelian)
+								.addComponent(lblHargaSatuan_1))))
+					.addGap(42)
+					.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
 		);
+		
+		tblupload = new JTable();
+		scrollPane_1.setViewportView(tblupload);
+		tblupload.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"namauser", "jenis part", "merk part", "no seri", "tahun pembuatan", "tgl pembelian", "jumlah", "harga satuan", "c_nopol"
+			}
+		));
 		
 		
 		scrollPane.setViewportView(table);
@@ -299,7 +399,11 @@ public class PerbaikanArmada extends JPanel {
 		
 		btnTambah.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent po) {
+				cljtext();
 				tambah();
+				updatetbstok();
+				
+				updatestoksql();
 			}
 		});
 		btnSimpan.addActionListener(new ActionListener() {
@@ -312,7 +416,7 @@ public class PerbaikanArmada extends JPanel {
 			public void actionPerformed(ActionEvent i) {
 				String olprt = jenisPart.getSelectedItem().toString();
 				merkpartOld.setModel(new DefaultComboBoxModel<>(getold("select nama_barang from master_part where jenis_barang = '"+olprt+"'")));
-				
+				merkPart.setText(jenisPart.getSelectedItem().toString());
 			}
 		});
 		merkpartOld.addActionListener(new ActionListener() {
@@ -321,6 +425,8 @@ public class PerbaikanArmada extends JPanel {
 				noseriOld.setText(String.join(",",getold("select nomor_seri from master_part where nama_barang = '"+olprt+"'")));
 				tahunpembuatanOld.setText(String.join(",",getold("select tahun_pembuatan from master_part where nama_barang = '"+olprt+"'")));
 				tanggalpembelianOld.setText(String.join(",",(getold("select tanggal_pembelian from master_part where nama_barang = '"+olprt+"'"))));
+				hargaOld.setText(String.join(",", getold("select harga from master_part where nama_barang='"+olprt+"'")));
+				merkPart.setText(jenisPart.getSelectedItem().toString());
 			}
 		});
 		
@@ -345,6 +451,7 @@ public class PerbaikanArmada extends JPanel {
 				driver.setModel(new DefaultComboBoxModel(getdriver()));
 			}
 		});
+		
 		
 		
 
@@ -385,16 +492,16 @@ public class PerbaikanArmada extends JPanel {
 	public void tambah() {
 		DefaultTableModel tbh = (DefaultTableModel)table.getModel();
 		String merk,merkarm,jumlah,bengkel,ket,jenisarm,nopol,kilo,tgperbaikan,jenspart,drivee;
-		merk=merkPart.getText();
+		merk=merkpartNew.getText();
 		merkarm=merkArmada.getSelectedItem().toString();
 		jumlah=jumlahPart.getText();
-		bengkel=keterangan.getText();
-		ket=namaBengkel.getText();
+		ket=keterangan.getText();
+		bengkel=namaBengkel.getText();
 		jenisarm=jenisArmada.getSelectedItem().toString();
 		nopol=nomorPol.getSelectedItem().toString();
 		kilo=kilometer.getText();
 		tgperbaikan=tanggalPerbaikan.getText();
-		jenspart=jenisPart.getSelectedItem().toString();
+		jenspart=merkpartOld.getSelectedItem().toString();
 		drivee=driver.getSelectedItem().toString();
 		String[] rdt = {jenisarm,merkarm,nopol,drivee,kilo,tgperbaikan,jenspart,merk,jumlah,bengkel,ket};
 		tbh.addRow(rdt);
@@ -437,13 +544,13 @@ public class PerbaikanArmada extends JPanel {
 		} catch (Exception e) {
 			// TODO: handle exception
 			JOptionPane.showMessageDialog(null, e);
+		}finally {
+			JOptionPane.showMessageDialog(null, "SUCCESS");
 		}
 	}
 	public String jam() {
-		
 		DateTimeFormatter fx = DateTimeFormatter.ofPattern("HH:mm:ss");
 		String jam = LocalTime.now().truncatedTo(ChronoUnit.SECONDS).format(fx);
-		
 		return jam;
 	}
 	public void clrc() {
@@ -456,7 +563,43 @@ public class PerbaikanArmada extends JPanel {
 			}else if(pp[i] instanceof JTextField) {
 				((JTextField)pp[i]).setText("");
 			}
-		
 		}
+	}
+	public void cljtext() {
+		Component[] p=this.getComponents();
+		for (int i=0;i<p.length;i++) {
+			if(p[i] instanceof JTextField) {
+				((JTextField)p[i]).setText("aa");
+			}
+		}
+	}
+	
+	public void updatetbstok() {
+		DefaultTableModel tbup = (DefaultTableModel)tblupload.getModel();
+		String usr,jens,merk,noseri,thnbuat,tglbeli,jml,harga,cnopol;
+		usr=mn.uslog().getText();
+		jens=jenisPart.getSelectedItem().toString();
+		merk=merkpartNew.getText();
+		noseri=noseriNew.getText();
+		thnbuat=tahunpembuatanNew.getText();
+		tglbeli=tanggalpembelianNew.getDateStringOrEmptyString();
+		jml=jumlahPart.getText();
+		harga= hargaNew.getText();
+		cnopol=nomorPol.getSelectedItem().toString();
+		String[] rdata= {usr,jens,merk,noseri,thnbuat,tglbeli,jml,harga,cnopol};
+		tbup.addRow(rdata);
+	}
+	public void updatestoksql() {
+		Object[] pp = getTableData(tblupload);
+		JOptionPane.showMessageDialog(null, pp.length);
+	}
+	public Object[] getTableData (JTable tables) {
+	    TableModel dtm = tables.getModel();
+	    int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
+	    Object[] tableData = new Object[nCol];
+	    for (int i = 0 ; i < nRow ; i++)
+	        for (int j = 0 ; j < nCol ; j++)
+	            tableData[j] = dtm.getValueAt(i,j);
+	    return tableData;
 	}
 }
